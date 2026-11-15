@@ -1,3 +1,6 @@
+-----------------------------------------------------------
+--Vérifier la présence des fichiers avec dbutils.fs.ls().
+-----------------------------------------------------------
 --Si Dossier vide ou absent : livraison en retard.
 -- Si Dossier présent : vérifier la date calculée par le job et le chemin paramétré.
 -- Si Erreur de droits : escalader.
