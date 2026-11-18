@@ -13,13 +13,18 @@
 
 6- Pour chaque job échoué on effectue un diagnostic de niveau 2 (investigation d'incident) suite à la détection d'un run global en échec. Puisque la `Jobs échecs de la nuit.sql` a identifié que les jobs en echec et les run_id associés. On utilise les run_id en echec dans la requête `Tache en cause.sql` pour identifier la tâche exacte qui a fait échouer l'ensemble du DAG.
 Résultat attendu :
-• Identifier la tâche en échec.
-• Identifier son état d'exécution.
-• Identifier le code de terminaison.
-• Déterminer à quel moment l'incident s'est produit.
-Pour chaque task le terminal_code donne le message d'érreur permet d'avoir les infos comme symptomes(FileNotFoundException, ConcurrentAppendException) , causes racines(Fichier non livré ou livraison en retard, Écriture concurrente,...) pour créer la fiche d'incident avec 
 
-## 7- Diagnostique - Cause - Action
+• Identifier la tâche en échec
+
+• Identifier son état d'exécution
+
+• Identifier le code de terminaison
+
+• Déterminer à quel moment l'incident s'est produit
+
+Pour chaque task le **terminal_code** donne le message d'érreur permet d'avoir les infos comme symptômes(**FileNotFoundException, ConcurrentAppendException**) , causes racines(Fichier non livré ou livraison en retard, Écriture concurrente,...) pour créer la fiche d'incident avec 
+
+## 7- Diagnostique - Causes - Actions
 
 ### A- ConcurrentAppendException`
 
