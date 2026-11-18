@@ -21,11 +21,49 @@ Pour chaque task le terminal_code donne le message d'érreur permet d'avoir les 
 
 ## 7- Diagnostique - Cause - Action
 
-- Si **Symptome = `ConcurrentAppendException`** on peut utiliser la requête  DESCRIBE HISTORY silver.sales.orders.
+- Si **Symptome : `ConcurrentAppendException`** on peut utiliser la requête  DESCRIBE HISTORY silver.sales.orders.
   
-    **Cause possible = Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
-   **Diagnostique : Executer la requete fraicheur.sql
-- Si le symptome est FileNotFoundException on peut utiliser la requête `diagnostic FileNotFoundException.sql` pour vérifier dans ADLS la présence ou pas du fichier afin de confirmer la cause et de savoir quel action faire.
+  **Cause possible :**
+     - [ ] Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
+  
+  **Diagnostique :**
+     - [ ]  Exécuter la requête fraicheur.sql pour avoir l'historique de la table delta
+     - [ ]  dentifier les jobs ayant écrit simultanément
+
+  **Résolution :**
+     - [ ] Attendre la fin de l'écriture concurrente
+     - [ ] Décaler les plannings et optimiser les conditions du MERGE
+
+  **Relance :**
+     - [ ] Vérifier au préalable que l'écriture concurrente est terminée
+           
+  **Validation :**
+     - [ ] Vérifier SUCCEEDED, les volumes et les doublons
+
+  **Prévention :**
+     - [ ] Revoir l'orchestration des jobs et les conditions de partitionnement
+     
+- Si le **Symptome** est **FileNotFoundException** on peut utiliser la requête `diagnostic FileNotFoundException.sql` pour vérifier dans ADLS la présence ou pas du fichier afin de confirmer la cause et de savoir quel action faire.
+
+  **Cause possible :**
+     - [ ] Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
+  
+  **Diagnostique :**
+     - [ ]  Exécuter la requête fraicheur.sql pour avoir l'historique de la table delta
+     - [ ]  dentifier les jobs ayant écrit simultanément
+
+  **Résolution :**
+     - [ ] Attendre la fin de l'écriture concurrente
+     - [ ] Décaler les plannings et optimiser les conditions du MERGE
+
+  **Relance :**
+     - [ ] Vérifier au préalable que l'écriture concurrente est terminée
+           
+  **Validation :**
+     - [ ] Vérifier SUCCEEDED, les volumes et les doublons
+
+  **Prévention :**
+     - [ ] Revoir l'orchestration des jobs et les conditions de partitionnement
 
 - Si le symptome est 403 Forbidden ou AuthorizationPermissionMismatch il faut Contrôler les autorisations RBAC et ACL.
 
