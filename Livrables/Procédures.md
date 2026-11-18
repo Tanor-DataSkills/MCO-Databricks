@@ -1,5 +1,7 @@
 # 1- Plan d’action
 
+Un planning opérationnel de 12 semaines réparti en jalons avec des critères de sortie précis
+
 **Semaine 1 : cartographier et sécuriser**
 
 Inventaire des jobs/workflows : criticité (P1/P2/P3), propriétaire, planning, SLA, dépendances amont/aval, tables produites.
@@ -9,6 +11,8 @@ Obtenir les accès : workspace, system tables, Log Analytics, outil de ticketing
 Dérouler le contrôle 7h30 en doublon avec un collègue, noter les points de friction.
 
 Lister les 10 incidents les plus fréquents des 3 derniers mois.
+
+Livrable : matrice d'exploitation et cartographie.
 
 **Semaines 2-3 : stabiliser**
 
@@ -20,6 +24,8 @@ Alertes de base : échec, dépassement de durée, job non démarré.
 
 Premiers problèmes ouverts (RCA sur les top récurrents).
 
+Livrable : première version du rapport MCO et du Runbook.
+
 **Semaines 4-6 : industrialiser**
 
 Dashboard de supervision (Databricks SQL ou Power BI) et KPI MCO.
@@ -27,6 +33,8 @@ Dashboard de supervision (Databricks SQL ou Power BI) et KPI MCO.
 Contrôles data : fraîcheur, volumétrie, schéma, doublons, nulls.
 
 Automatisation : relance auto sur erreurs transitoires (retries, backoff), notebook de diagnostic, résumé matinal automatique.
+
+Livrable : dispositif MCO automatisé V1.
 
 **Semaines 7-12 : transmettre et améliorer**
 
@@ -36,6 +44,7 @@ Revue mensuelle des problèmes et des KPI.
 
 Réduction des coûts et durées (clusters, tailles, concurrence).
 
+Livrable : dispositif MCO industrialisé et transféré
 
 # 2- Livrables : 
 
