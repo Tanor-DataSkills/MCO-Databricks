@@ -18,7 +18,22 @@ Résultat attendu :
 • Identifier le code de terminaison.
 • Déterminer à quel moment l'incident s'est produit.
 Pour chaque task le terminal_code donne le message d'érreur permet d'avoir les infos comme symptomes(FileNotFoundException, ConcurrentAppendException) , causes racines(Fichier non livré ou livraison en retard, Écriture concurrente,...) pour créer la fiche d'incident avec 
-7- Requête de diagnostique
-- Si le symptome est ConcurrentAppendException on peut utiliser la requête
 
-- Si le symptome est FileNotFoundException on peut utiliser la requête `diagnostic FileNotFoundException.sql`
+## 7- Diagnostique - Cause - Action
+
+- Si **Symptome = `ConcurrentAppendException`** on peut utiliser la requête  DESCRIBE HISTORY silver.sales.orders.
+  
+    **Cause possible = Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
+   **Diagnostique : Executer la requete fraicheur.sql
+- Si le symptome est FileNotFoundException on peut utiliser la requête `diagnostic FileNotFoundException.sql` pour vérifier dans ADLS la présence ou pas du fichier afin de confirmer la cause et de savoir quel action faire.
+
+- Si le symptome est 403 Forbidden ou AuthorizationPermissionMismatch il faut Contrôler les autorisations RBAC et ACL.
+
+- Si le symptome est OutOfMemoryError ou arrêt d'un executor pour manque de mémoire, on Examine les stages, executors et tâches.
+
+- Si le symptome est Incompatibilité entre le schéma source et le schéma de la table Delta on examine le schema source en Exécutant DESCRIBE TABLE silver.sales.orders.
+
+- Si le symptome est Échec d'authentification ou erreur liée à un secret expiré il faut Contrôler la date d'expiration et l'identité utilisée.
+- Si JobTimeout / SLAExceeded   lors Examiner les durées des dernières exécutions et Identifier les stages les plus longs.
+
+- Si DeltaConcurrentModificationException alors Consulter DESCRIBE HISTORY.
