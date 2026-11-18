@@ -1,4 +1,4 @@
-## Livrables 1: Rapport MCO matinal 7h30
+# Livrables 1: Rapport MCO matinal 7h30
 
 1- On commence par exécuter la requête `Jobs échecs-reussis.sql` pour avoir le nombre de **jobs reussis** et **echecs**
 
@@ -21,7 +21,9 @@ Pour chaque task le terminal_code donne le message d'érreur permet d'avoir les 
 
 ## 7- Diagnostique - Cause - Action
 
-- Si **Symptome : `ConcurrentAppendException`** on peut utiliser la requête  DESCRIBE HISTORY silver.sales.orders.
+### A- ConcurrentAppendException`
+
+- Si **Symptome : `ConcurrentAppendException`** lors d'une écriture dans une table Delta.On peut utiliser la requête  DESCRIBE HISTORY silver.sales.orders.
   
   **Cause possible :**
      - [ ] Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
@@ -42,36 +44,264 @@ Pour chaque task le terminal_code donne le message d'érreur permet d'avoir les 
 
   **Prévention :**
      - [ ] Revoir l'orchestration des jobs et les conditions de partitionnement
+  
+  **Escalade :**
+     - [ ] Escalader au N2 si les conflits persistent
+
+
+### B- DeltaConcurrentModificationException
+
+- Si le **Symptome** est **DeltaConcurrentModificationException** alors il s'agit d' **Échec d'une transaction Delta à la suite d'une modification concurrente.**
+
+
+ **Causes possibles :**
+   - [ ] Transactions concurrentes (Plusieurs opérations modifient simultanément les mêmes données)
+   - [ ] Conflit de fichiers (Opérations incompatibles sur des fichiers ou partitions communes)
+  
+  **Diagnostique :**
+   - [ ]  Historique Delta(Consulter DESCRIBE HISTORY)
+   - [ ]  Exécutions(Identifier les jobs responsables des modifications concurrentes)
+
+  **Résolution :**
+   - [ ] Coordination (Attendre la fin des transactions et examiner la stratégie d'écriture)
+   - [ ] Optimisation (Revoir les périmètres d'écriture et les opérations concurrentes)
+
+  **Relance :**
+   - [ ] Conditions préalables (Vérifier l'absence de conflit et l'intégrité des données)
+           
+  **Validation :**
+   - [ ] Vérifier l'historique Delta, les volumes et les doublons
+
+  **Prévention :**
+   - [ ] Revoir l'orchestration et les périmètres de modification
+  
+  **Escalade :** Escalader au N2 pour analyse approfondie
+
+### C- FileNotFoundException
      
-- Si le **Symptome** est **FileNotFoundException** on peut utiliser la requête `diagnostic FileNotFoundException.sql` pour vérifier dans ADLS la présence ou pas du fichier afin de confirmer la cause et de savoir quel action faire.
+- Si le **Symptome** est **FileNotFoundException** lors de la lecture des fichiers ERP dans ADSL
 
-  **Cause possible :**
-     - [ ] Écriture concurrente** (Plusieurs jobs écrivent simultanément dans la même table)
+  **Causes possibles :**
+   - [ ] Livraison ERP (Fichier non livré ou livraison en retard)
+   - [ ] Répertoire absent ou vide(Chemin source incorrect ou fichiers indisponibles)
+   - [ ] Date incorrecte(Date calculée par le job erronée)
+   - [ ] Permissions(Droits d'accès ADLS insuffisants (403))
+         
   
   **Diagnostique :**
-     - [ ]  Exécuter la requête fraicheur.sql pour avoir l'historique de la table delta
-     - [ ]  dentifier les jobs ayant écrit simultanément
-
+   - [ ]  on peut utiliser la requête `diagnostic FileNotFoundException.sql` pour vérifier dans ADLS la présence ou pas du fichier afin de confirmer la cause et de savoir quel action faire:
+        - [ ] Si Dossier vide ou absent : Livraison ERP (Fichier non livré ou livraison en retard)
+        - [ ] Si Dossier présent : vérifier la date calculée par le job et le chemin paramétré.
+        - [ ] Si Erreur de droits : escalader.
+        - [ ] Dans les deux cas, vérifiez si l’erreur est déjà arrivée récemment : à partir de 2 occurrences, ouvrez un problème.
+    
   **Résolution :**
-     - [ ] Attendre la fin de l'écriture concurrente
-     - [ ] Décaler les plannings et optimiser les conditions du MERGE
+     - [ ] Si c'est un Fichier absent, Contacter l'équipe ERP et attendre la livraison
+     - [ ] Si c'est un Chemin incorrect, Corriger le paramétrage via le N2.
+     - [ ] Si Erreur 403(Si Erreur de droits), Escalader au N2 pour correction des permissions
+     - [ ] Si les Fichiers présents, Vérifier leur complétude avant toute reprise
 
   **Relance :**
-     - [ ] Vérifier au préalable que l'écriture concurrente est terminée
+     - [ ] Vérifier au préalable que les Fichiers complets, cause identifiée et corrigée, aucun run concurrent
            
   **Validation :**
      - [ ] Vérifier SUCCEEDED, les volumes et les doublons
 
   **Prévention :**
-     - [ ] Revoir l'orchestration des jobs et les conditions de partitionnement
+     - [ ] Ajouter une tâche d'attente des fichiers avec timeout à 07:00 et une alerte explicite
 
-- Si le symptome est 403 Forbidden ou AuthorizationPermissionMismatch il faut Contrôler les autorisations RBAC et ACL.
+  **Escalade :**
+     - [ ] À partir de 2 occurrences récentes, ouvrir un problème pour rechercher la cause racine.
 
-- Si le symptome est OutOfMemoryError ou arrêt d'un executor pour manque de mémoire, on Examine les stages, executors et tâches.
 
-- Si le symptome est Incompatibilité entre le schéma source et le schéma de la table Delta on examine le schema source en Exécutant DESCRIBE TABLE silver.sales.orders.
+### D- 403 Forbidden ou AuthorizationPermissionMismatch
+  
+- Si le **Symptome** est **403 Forbidden ou AuthorizationPermissionMismatch** il faut Contrôler les autorisations RBAC et ACL.
 
-- Si le symptome est Échec d'authentification ou erreur liée à un secret expiré il faut Contrôler la date d'expiration et l'identité utilisée.
-- Si JobTimeout / SLAExceeded   lors Examiner les durées des dernières exécutions et Identifier les stages les plus longs.
+**Causes possibles:**
+ 
+   - [ ] RBAC (Rôle Azure insuffisant)
+   - [ ] ACL (Permissions manquantes sur le répertoire ADLS)
+   - [ ] Identité (Service Principal ou Managed Identity incorrecte)
+  
+  **Diagnostique :**
+  - [ ]  Vérification des droits (Contrôler les autorisations RBAC et ACL)
+  - [ ]  Identité (Vérifier l'identité utilisée par le job)
 
-- Si DeltaConcurrentModificationException alors Consulter DESCRIBE HISTORY.
+  **Résolution :**
+  - [ ] Correction des droits (Faire intervenir l'équipe Azure / N2)
+  - [ ] Conditions préalables (Confirmer le rétablissement des permissions)
+
+  **Relance :**
+  - [ ] Conditions préalables(Confirmer le rétablissement des permissions)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Vérifier l'accès aux fichiers et le statut du job)
+
+  **Prévention :**
+  - [ ] Actions correctives(Mettre en place une revue périodique des droits)
+
+  **Escalade :**
+  - [ ] Récurrence (Escalader au N3 si le problème concerne l'infrastructure ou l'identité Azure)
+
+
+  ### E- OutOfMemoryError (OOM)
+  
+- Si le **Symptome** est **OutOfMemoryError** ou **arrêt d'un executor pour manque de mémoire**, on Examine les stages, executors et tâches.
+
+**Causes possibles:**
+ 
+   - [ ] Volume important (Augmentation du volume de données)
+   - [ ] Partitionnement (Partitions trop volumineuses ou déséquilibrées)
+   - [ ] Compute (Ressources mémoire insuffisantes)
+  
+  **Diagnostique :**
+  - [ ]  Spark UI (Examiner les stages, executors et tâches)
+  - [ ]  Compute (Vérifier l'utilisation CPU et mémoire)
+
+  **Résolution :**
+  - [ ] Optimisation (Analyser les partitions, les jointures et les traitements consommateurs de mémoire)
+  - [ ] Compute (Étudier une augmentation des ressources avec validation N2)
+
+  **Relance :**
+  - [ ] Conditions préalables(Cause identifiée et ressources ou traitement corrigés)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Vérifier le statut, les volumes et les temps d'exécution)
+
+  **Prévention :**
+  - [ ] Actions correctives(Optimiser le partitionnement et surveiller les volumes)
+
+  **Escalade :**
+  - [ ] Escalader au N3 si le problème est lié aux limites de capacité Azure
+
+### F- SchemaMismatch / Schema Evolution
+
+- Si le **symptome** est **Incompatibilité entre le schéma source et le schéma de la table Delta** on examine le schéma source en Exécutant DESCRIBE TABLE silver.sales.orders.
+
+
+**Causes possibles:**
+ 
+   - [ ] Évolution ERP (Ajout, suppression ou modification d'une colonne)
+   - [ ] Typage (Incompatibilité de types de données)
+   - [ ] Contrat de données (Modification non anticipée du format source)
+  
+  **Diagnostique :**
+  - [ ]  Schéma source (Examiner le schéma des fichiers ERP)
+  - [ ]  Schéma cible (Exécuter DESCRIBE TABLE silver.sales.orders)
+  - [ ]  Analyse (Identifier les différences et leur impact fonctionnel)
+
+  **Résolution :**
+  - [ ] Analyse (Identifier les différences et leur impact fonctionnel)
+  - [ ] Correction (Adapter le mapping et faire valider l'évolution du schéma)
+
+  **Relance :**
+  - [ ] Conditions préalables(Schéma compatible et correction validée)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Vérifier les colonnes, les types et l'intégrité des données)
+
+  **Prévention :**
+  - [ ] Actions correctives(Mettre en place des contrôles de conformité du schéma source)
+
+  **Escalade :**
+  - [ ] Recurrence(Solliciter le N2 et l'Owner fonctionnel ERP)
+        
+
+  ### G- SecretExpired / AuthenticationFailure    
+  
+- Si le **Symptome**  **SecretExpired / AuthenticationFailureest** signifie un **Échec d'authentification ou erreur liée à un secret expiré.** il faut Contrôler la date d'expiration et l'identité utilisée.
+
+
+**Causes possibles:**
+ 
+   - [ ] Expiration (Secret ou certificat expiré)
+   - [ ] Configuration (Mauvais identifiant ou configuration d'authentification)
+   - [ ] Identité (Problème de Service Principal ou Managed Identity)
+  
+  **Diagnostique :**
+  - [ ]  Vérification (Contrôler la date d'expiration et l'identité utilisée)
+
+  **Résolution :**
+  - [ ] Renouvellement (Renouveler le secret selon la procédure de sécurité)
+
+  **Relance :**
+  - [ ] Conditions préalables(Authentification testée et accès rétabli)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Vérifier la connexion à la source et le statut du job)
+
+  **Prévention :**
+  - [ ] Actions correctives(Mettre en place des alertes d'expiration anticipées)
+
+  **Escalade :**
+  - [ ] Recurrence(Escalader au N2 ou à l'équipe sécurité)
+
+
+### H- JobTimeout / SLAExceeded
+
+- Si **Symptome** est **JobTimeout / SLAExceeded** signifie que Le job dépasse son temps d'exécution attendu ou son timeout configuré. Alors Examiner les durées des dernières exécutions et Identifier les stages les plus longs.
+
+**Causes possibles:**
+ 
+   - [ ] Volume (Augmentation du volume traité)
+   - [ ] Compute (Ressources insuffisantes)
+   - [ ] Dépendance (Retard d'un job amont ou d'une livraison ERP)
+   - [ ] Performance (Requête Spark ou MERGE trop coûteux)
+  
+  **Diagnostique :**
+  - [ ] Historique (Examiner les durées des dernières exécutions)
+  - [ ]  Spark UI (Identifier les stages les plus longs)
+
+
+  **Résolution :**
+  - [ ] Optimisation (Analyser les performances et les dépendances)
+  - [ ] Orchestration (Adapter les horaires ou les dépendances après validation)
+
+  **Relance :**
+  - [ ] Conditions préalables(Vérifier qu'aucun run concurrent n'est actif et que la cause est corrigée)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Confirmer la disponibilité des données avant le SLA)
+
+  **Prévention :**
+  - [ ] Actions correctives(Définir des seuils d'alerte et suivre les temps d'exécution)
+
+  **Escalade :**
+  - [ ] Informer le N2 et les consommateurs métier en cas de risque SLA
+
+
+### I- DataQualityFailure
+
+
+- Si **Symptome** est **DataQualityFailure** signifie qu'il y'a **Échec d'un contrôle de qualité des données**.
+
+  
+**Causes possibles:**
+ 
+   - [ ] Doublons (Plusieurs enregistrements pour une même clé métier)
+   - [ ] Données nulles (Présence de valeurs obligatoires manquantes)
+   - [ ] Volume (Écart important avec le volume attendu)
+   - [ ] Fraîcheur (Données trop anciennes ou incomplètes)
+  
+  **Diagnostique :**
+  - [ ] Unicité (Vérifier les doublons sur la clé métier)
+  - [ ] Complétude (Vérifier les colonnes obligatoires)
+  - [ ] Fraîcheur (Contrôler la dernière date d'ingestion)
+
+
+  **Résolution :**
+  - [ ] Analyse source (Identifier l'origine de l'anomalie)
+  - [ ] Correction (Corriger ou faire corriger les données sources)
+
+  **Relance :**
+  - [ ] Conditions préalables(Données corrigées et contrôles de qualité satisfaits)
+        
+  **Validation :**
+  - [ ] Contrôle post-reprise(Vérifier les règles de qualité et la cohérence métier)
+
+  **Prévention :**
+  - [ ] Actions correctives(Automatiser les contrôles et les alertes qualité)
+
+  **Escalade :**
+  - [ ] Informer le N2 et l'Owner métier
