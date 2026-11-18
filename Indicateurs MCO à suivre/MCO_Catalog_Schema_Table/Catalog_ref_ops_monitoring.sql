@@ -1,4 +1,5 @@
---On commence par créer le catalog mco, les schémas et les tables de mco.ref et mco.ops ; Puis on rempli que job_registry et table_registry avec des jobs et tables réels (commencer par les P1)
+--Etape 1: On commence par créer le catalog mco, les schémas et les tables de mco.ref et mco.ops ; 
+--Puis on rempli que job_registry et table_registry avec des jobs et tables réels (commencer par les P1)
 
 CREATE CATALOG IF NOT EXISTS mco;
 CREATE SCHEMA IF NOT EXISTS mco.ref;
