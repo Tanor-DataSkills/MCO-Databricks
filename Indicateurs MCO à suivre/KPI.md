@@ -18,3 +18,5 @@
 3.  Droits : les vues s'exécutent avec les droits de leur propriétaire ; donner aux lecteurs SELECT sur mco.monitoring uniquement, pas sur les system tables. Le propriétaire a besoin de SELECT sur system.lakeflow et system.billing.
 4.  Construire chaque dashboard sur les vues indiquées, avec un rafraîchissement planifié (tableau de synthèse en début de section) et un abonnement e-mail ou Teams pour D1 à 07h25.
 5.  Brancher une alerte SQL sur v_morning_status (statut ROUGE) et sur v_jobs_not_started.
+
+
