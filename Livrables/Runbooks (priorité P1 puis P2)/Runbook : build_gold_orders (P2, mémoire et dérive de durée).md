@@ -8,8 +8,10 @@
 
 **Relance sécurisée :**
 
-• Prérequis : silver.sales.orders est à jour pour le jour (sinon la table gold serait calculée sur des données périmées, cas du 09/11 où l’ingestion était en échec), cause de l’OOM traitée, aucun autre run actif.
-• Idempotence : À COMPLÉTER (mode d’écriture de la table gold) ; sans MERGE ni overwrite, risque de doublons.
+• Prérequis : silver.sales.orders est à jour pour le jour (sinon la table gold serait calculée sur des données périmées, cas du 09/11 où l’ingestion était en échec), cause de l’OOM traitée, aucun autre run actif
+
+• Idempotence : À COMPLÉTER (mode d’écriture de la table gold) ; sans MERGE ni overwrite, risque de doublons
+
 • Validation : volume vs J-1, fraîcheur, doublons sur la clé.
 
 **Rollback :** RESTORE de la table gold, validation N2 requise.
