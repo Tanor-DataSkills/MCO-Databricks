@@ -8,9 +8,14 @@
 
 **Relance sécurisée :**
 
-• Prérequis : secret renouvelé et pris en compte par le secret scope. Ne pas relancer avant : des échecs d’authentification répétés peuvent verrouiller le compte de service.
-• Idempotence : À COMPLÉTER.
-• Validation : run SUCCEEDED, données synchronisées cohérentes avec la source.
-• Ne jamais coller un secret en clair dans un ticket ou un message.
-**Précédent :** le 03/11, détecté en 15 min, résolu en 2 h.
+• Prérequis : secret renouvelé et pris en compte par le secret scope. Ne pas relancer avant : des échecs d’authentification répétés peuvent verrouiller le compte de service
+
+• Idempotence : À COMPLÉTER
+
+• Validation : run SUCCEEDED, données synchronisées cohérentes avec la source
+
+• Ne jamais coller un secret en clair dans un ticket ou un message
+
+**Précédent :** le 03/11, détecté en 15 min, résolu en 2 h
+
 **Correctifs durables :** rotation automatisée (30/11), alerte d’expiration à J-30.
