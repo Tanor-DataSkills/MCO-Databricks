@@ -1,4 +1,45 @@
-# Livrables 1: Rapport MCO matinal 7h30
+# 1- Plan d’action
+
+**Semaine 1 : cartographier et sécuriser**
+
+Inventaire des jobs/workflows : criticité (P1/P2/P3), propriétaire, planning, SLA, dépendances amont/aval, tables produites.
+
+Obtenir les accès : workspace, system tables, Log Analytics, outil de ticketing, Key Vault (lecture).
+
+Dérouler le contrôle 7h30 en doublon avec un collègue, noter les points de friction.
+
+Lister les 10 incidents les plus fréquents des 3 derniers mois.
+
+**Semaines 2-3 : stabiliser**
+
+Standardiser le contrôle 7h30 (checklist + notebook/dashboard unique).
+
+Runbooks des 10 jobs critiques et des 5 erreurs récurrentes.
+
+Alertes de base : échec, dépassement de durée, job non démarré.
+
+Premiers problèmes ouverts (RCA sur les top récurrents).
+
+**Semaines 4-6 : industrialiser**
+
+Dashboard de supervision (Databricks SQL ou Power BI) et KPI MCO.
+
+Contrôles data : fraîcheur, volumétrie, schéma, doublons, nulls.
+
+Automatisation : relance auto sur erreurs transitoires (retries, backoff), notebook de diagnostic, résumé matinal automatique.
+
+**Semaines 7-12 : transmettre et améliorer**
+
+Sessions de formation (une par erreur récurrente), exercices de relance en sandbox.
+
+Revue mensuelle des problèmes et des KPI.
+
+Réduction des coûts et durées (clusters, tailles, concurrence).
+
+
+# 2- Livrables : 
+
+## A- Rapport MCO matinal 7h30
 
 1- On commence par exécuter la requête `Jobs échecs-reussis.sql` pour avoir le nombre de **jobs reussis** et **echecs**
 
