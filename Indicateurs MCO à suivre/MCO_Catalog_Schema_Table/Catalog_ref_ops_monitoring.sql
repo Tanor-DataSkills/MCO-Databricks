@@ -1,3 +1,5 @@
+--On commence par créer le catalog mco, les schémas et les tables de mco.ref et mco.ops ; Puis on rempli que job_registry et table_registry avec des jobs et tables réels (commencer par les P1)
+
 CREATE CATALOG IF NOT EXISTS mco;
 CREATE SCHEMA IF NOT EXISTS mco.ref;
 CREATE SCHEMA IF NOT EXISTS mco.ops;
@@ -29,3 +31,5 @@ CREATE TABLE IF NOT EXISTS mco.ops.dq_results (
 
 CREATE TABLE IF NOT EXISTS mco.ops.table_metrics (
   table_name STRING, mesure_ts TIMESTAMP, max_ingestion_ts TIMESTAMP, row_count BIGINT);
+
+--Après avoir remplissage des tables job_registry et table_registry on enchaine la création des vues
