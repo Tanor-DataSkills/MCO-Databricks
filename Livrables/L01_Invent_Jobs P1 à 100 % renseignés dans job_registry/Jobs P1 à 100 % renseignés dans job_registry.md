@@ -2,8 +2,10 @@
 
 **Requêtes SQL concernées:** Inventaire des jobs P1 à 100 % renseignés/non renseignés.sql
 
-**Livrables: 2 tableaux**
+**Livrables: 3 tableaux**
 
+- Tableau Inventaire global (avec dépendances amont/aval et tables produites via tables système)
+  
 - Tableau Inventaire des Jobs P1 complets à 100 %
   
 - Tableau Inventaire des jobs non renseignés
@@ -13,7 +15,52 @@
 
 ### C'est le premier livrable à fournir.
 
-## Inventaire des Jobs P1 complets à 100 %
+## 1- Inventaire global (avec dépendances amont/aval et tables produites via tables système)
+
+>
+
+WITH tasks_agg AS (
+  SELECT
+    job_id,
+    CONCAT_WS(', ', COLLECT_SET(task_key)) AS tasks_list,
+    CONCAT_WS(', ', COLLECT_SET(
+      CASE WHEN SIZE(depends_on) > 0 THEN CONCAT(task_key, ' <- ', ARRAY_JOIN(TRANSFORM(depends_on, x -> x.task_key), '+')) END
+    )) AS dependances_amont_aval
+  FROM system.lakeflow.job_tasks
+  GROUP BY job_id
+),
+tables_agg AS (
+  SELECT
+    entity_id AS job_id,
+    CONCAT_WS(', ', COLLECT_SET(
+      CONCAT_WS('.', target_table_catalog, target_table_schema, target_table_name)
+    )) AS tables_produites
+  FROM system.access.table_lineage
+  WHERE entity_type = 'JOB'
+    AND target_table_name IS NOT NULL
+  GROUP BY entity_id
+)
+SELECT
+  r.job_id,
+  r.job_name,
+  r.criticite,
+  r.owner,
+  r.heure_prevue AS planning_paris,
+  r.sla_heure AS sla_paris,
+  COALESCE(ta.dependances_amont_aval, 'Non renseigne / Aucune') AS dependances_amont_aval,
+  COALESCE(tb.tables_produites, 'Non renseigne / Aucune') AS tables_produites,
+  r.runbook_url,
+  r.actif
+FROM mco.ref.job_registry r
+LEFT JOIN tasks_agg ta
+  ON r.job_id = CAST(ta.job_id AS STRING)
+LEFT JOIN tables_agg tb
+  ON r.job_id = CAST(tb.job_id AS STRING)
+WHERE r.actif = true
+ORDER BY r.criticite ASC, r.job_name ASC;
+>
+
+## 2- Inventaire des Jobs P1 complets à 100 %
 
 Pour qu'un job P1 soit considéré comme 100 % renseigné sur la structure de mco.ref.job_registry, il doit :
 
@@ -67,7 +114,7 @@ Lors de la saisi il peut y'avoir des espaces ou des majuscules et muniscules com
 
 - Couverture de la nuit : Sur les 3 lignes retournées, tous les sla_heure (05:30, 06:45, 07:00) se situent avant le contrôle matinal de 07:30 : tout dépassement ou échec sur ces job_id est donc détectable au point de 7h30 avec un contexte complet (owner et runbook_url connus).
 
-  ## Inventaire des Jobs incomplets
+  ## 3- Inventaire des Jobs incomplets
 
 
   >
