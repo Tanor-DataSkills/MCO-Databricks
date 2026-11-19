@@ -6,7 +6,7 @@ Le RCA (analyse de cause racine) ou post-mortem sert à comprendre pourquoi un i
 - Fréquence: Pour les incidents P1 et les récurrents
 
 - Contenu: Chronologie, 5 pourquoi, cause racine, actions suivies
-- 
+  
 
 **Exemple RCA-001 – FileNotFoundException**
 
