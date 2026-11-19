@@ -22,3 +22,28 @@ Le script MERGE ci-dessus doit être exécuté de manière quotidienne ou horair
 **Étape 2 : Détection des nouveaux jobs à qualifier (Requête de contrôle)**
 
 Pour identifier les nouveaux pipelines apparus suite au MERGE qui nécessitent une classification MCO, exécute la requête de contrôle suivante (priorité aux P1) :
+>
+      SELECT 
+            job_id, 
+            job_name, 
+            actif
+      FROM mco.ref.job_registry
+      WHERE actif = true 
+      AND (criticite IS NULL OR owner IS NULL)
+      ORDER BY job_name ASC;
+>
+
+**Étape 3 : Enrichissement par les Owners / MCO (UPDATE)**
+
+Une fois les nouveaux jobs identifiés, l'équipe MCO complète les informations opérationnelles en se coordonnant avec les équipes de développement (en commençant impérativement par les flux critiques P1) :
+
+>
+   -- Exemple d'affectation pour un job critique P1 nouvellement détecté
+      UPDATE mco.ref.job_registry
+      SET 
+         criticite = 'P1',
+         owner = 'Data Engineering Core',
+         sla_heure = '07:00',
+         runbook_url = 'https://wiki.company.internal/databricks/runbooks/etl_finance_pnl'
+      WHERE job_id = 104;
+>
