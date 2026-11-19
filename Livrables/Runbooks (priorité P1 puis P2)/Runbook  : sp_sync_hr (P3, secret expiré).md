@@ -1,3 +1,8 @@
+
+- Fréquence: Un par job, P1 d’abord (100 % des P1 à la semaine 6)
+  
+- Contenu: Identité, dépendances, erreurs connues, relance, backfill, rollback
+
 ## Runbook : sp_sync_hr (P3, secret expiré)
 
 <img width="748" height="392" alt="image" src="https://github.com/user-attachments/assets/f2e4c36b-09f1-44eb-9cd2-1cdddbe481b5" />
