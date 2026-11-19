@@ -1,6 +1,11 @@
 ## Registre incidents et problèmes
 
 
+- Fréquence: continu
+  
+- Contenu: Liste des incidents, MTTD, MTTR, récurrence, problèmes ouverts avec owner et échéance
+
+  
 Les champs sont remplis manuellement sauf les occurences obtenues à l'aide de la requete `Occurences.sql`
 
 
