@@ -1,3 +1,7 @@
+- Fréquence: À chaque incident
+  
+- Contenu: Symptôme, impact, cause, actions horodatées, relance, correctif durable
+
 **Incident INC-001 : FileNotFoundException(Template for FileNotFoundException )**
 Job / run_id : ingest_sales_daily / 48211
 
