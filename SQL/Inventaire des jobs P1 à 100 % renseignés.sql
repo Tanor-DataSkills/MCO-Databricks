@@ -1,3 +1,6 @@
+-- Objectifs: Faire l'inventaire complet des jobs 100% renseignés(priorisant les P1) et non renseignés
+--Livrables concernés: Livrable 1: Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites)
+
 SELECT
     job_id,
     job_name,
