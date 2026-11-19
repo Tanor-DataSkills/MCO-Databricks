@@ -1,6 +1,6 @@
 ## Fiche Erreur récurrente
 
-- Fréquence: Faire une fiche par erreur récurrente
+- Fréquence: Faire une fiche par erreur récurrente(À chaque erreur vue au moins 2 fois)
   
 - Contenu: Message, cause, diagnostic en 3 min, action, prévention
 
