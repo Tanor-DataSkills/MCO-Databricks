@@ -1,3 +1,7 @@
+- Fréquence: Un par job, P1 d’abord (100 % des P1 à la semaine 6)
+  
+- Contenu: Identité, dépendances, erreurs connues, relance, backfill, rollback
+
 ## Runbook : refresh_customer_360 (P2, conflit Delta)
 
 <img width="781" height="397" alt="image" src="https://github.com/user-attachments/assets/8d7e2f13-ae65-42e0-b087-068bb66df9d7" />
