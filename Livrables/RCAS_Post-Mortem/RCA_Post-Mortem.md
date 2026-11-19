@@ -3,6 +3,11 @@
 
 Le RCA (analyse de cause racine) ou post-mortem sert à comprendre pourquoi un incident s’est produit, pour qu’il ne revienne pas. La relance rétablit le service, mais elle ne règle pas la cause.
 
+- Fréquence: Pour les incidents P1 et les récurrents
+
+- Contenu: Chronologie, 5 pourquoi, cause racine, actions suivies
+- 
+
 **Exemple RCA-001 – FileNotFoundException**
 
 P1RCA – Exemple
