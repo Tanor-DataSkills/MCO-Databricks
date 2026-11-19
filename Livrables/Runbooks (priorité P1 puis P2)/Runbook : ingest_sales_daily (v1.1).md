@@ -1,3 +1,7 @@
+- Fréquence: Un par job, P1 d’abord (100 % des P1 à la semaine 6)
+  
+- Contenu: Identité, dépendances, erreurs connues, relance, backfill, rollback
+
 # RUNBOOK
 
 Le Runbook est un document de reférence qui sert à résoudre rapidement des incidents. Il donne la marche à suivre exacte pour rétablir le service sans avoir à improviser. 
