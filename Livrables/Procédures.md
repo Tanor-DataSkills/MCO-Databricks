@@ -46,7 +46,21 @@ Réduction des coûts et durées (clusters, tailles, concurrence).
 
 Livrable : dispositif MCO industrialisé et transféré
 
+
 # 2- Livrables : 
+
+**Par étape du plan**
+
+Semaines 1 à 3 : inventaire des jobs avec criticité, rapport 7h30 standardisé, runbooks P1, alertes de base, premiers problèmes ouverts.
+
+Semaines 4 à 6 : dashboards, contrôles data, premières automatisations.
+
+Semaines 7 à 12 : formations, revue mensuelle, réduction des coûts et des durées.
+
+**KPI à suivre**
+
+Taux de succès des jobs, MTTD, MTTR, nombre d’incidents récurrents, % d’incidents avec runbook, % de relances automatisées, respect du SLA de 7h30, coût en DBU par job et nombre de problèmes clos.
+
 
 ## A- Rapport MCO matinal 7h30
 
