@@ -1,3 +1,7 @@
+- Fréquence: Un par job, P1 d’abord (100 % des P1 à la semaine 6)
+  
+- Contenu: Identité, dépendances, erreurs connues, relance, backfill, rollback
+
 ## Runbook : build_gold_orders (P2, mémoire et dérive de durée)
 
 <img width="782" height="403" alt="image" src="https://github.com/user-attachments/assets/f6ed7029-a51b-451b-8f1c-dbe50dc546bd" />
