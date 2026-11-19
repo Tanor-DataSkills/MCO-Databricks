@@ -1,3 +1,7 @@
+- Fréquence: Un par job, P1 d’abord (100 % des P1 à la semaine 6)
+  
+- Contenu: Identité, dépendances, erreurs connues, relance, backfill, rollback
+
 ## Runbook : export_finance_gl (P3, job non démarré)
 
 <img width="380" height="314" alt="image" src="https://github.com/user-attachments/assets/5d4e8fb6-2f21-45ae-8027-8cbf29b98e4f" />
