@@ -57,6 +57,10 @@ Semaines 4 à 6 : dashboards, contrôles data, premières automatisations.
 
 Semaines 7 à 12 : formations, revue mensuelle, réduction des coûts et des durées.
 
+
+<img width="835" height="425" alt="image" src="https://github.com/user-attachments/assets/93de27b3-36ce-4be9-b892-055133729610" />
+
+
 **KPI à suivre**
 
 Taux de succès des jobs, MTTD, MTTR, nombre d’incidents récurrents, % d’incidents avec runbook, % de relances automatisées, respect du SLA de 7h30, coût en DBU par job et nombre de problèmes clos.
