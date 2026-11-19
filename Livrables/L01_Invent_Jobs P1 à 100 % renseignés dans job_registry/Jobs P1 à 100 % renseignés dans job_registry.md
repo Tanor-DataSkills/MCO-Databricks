@@ -1,3 +1,14 @@
+**Ordre de livraison:** Première livraison (semaine 1)
+
+**Requêtes SQL concernées:** Inventaire des jobs P1 à 100 % renseignés/non renseignés.sql
+
+**Livrables: 2 tableaux**
+
+- Tableau Inventaire des Jobs P1 complets à 100 %
+  
+- Tableau Inventaire des jobs non renseignés
+  
+
 # Livrable 1: Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites)
 
 ### C'est le premier livrable à fournir.
