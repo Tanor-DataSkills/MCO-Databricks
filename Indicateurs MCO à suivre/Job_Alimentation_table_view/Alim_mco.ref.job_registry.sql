@@ -31,6 +31,13 @@ ORDER BY job_name ASC;
 
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Étape 3 : Enrichissement par les Owners / MCO (UPDATE)
+--2 méthodes de faire la saisie des informations des champs métier criticite,owner,heure_prevue,sla_heure,runbook_url de la table  mco.ref.job_registry:
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+                                           
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                      --Méthodes 1: Utiliser directement un UPDATE SET
+
 --Une fois les nouveaux jobs identifiés, l'équipe MCO complète les informations opérationnelles en se coordonnant avec les équipes de développement 
 --(en commençant impérativement par les flux critiques P1) :
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -43,4 +50,28 @@ SET
     runbook_url = 'https://wiki.company.internal/databricks/runbooks/etl_finance_pnl'
 WHERE job_id = 104;
 
+--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+                                                      --Méthodes 2: Utiliser un un volume et MERGE
 
+--Après l’atelier avec les owners, l’équipe dépose un fichier jobs_p1.csv dans un Volume (disponible dans Alim_mco_metier_job_registry.csv)
+--Puis un MERGE met à jour les lignes existantes :
+-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+--fichier jobs_p1.csv à charger dans volume( pour toute nouvelle modification on modifie le jobs_p1.csv puis recharger dans le volume puis executer la MERGE qui alimente le mco.ref.job_registry
+
+--job_id,criticite,owner,heure_prevue,sla_heure,runbook_url
+        -- 1001,P1,Équipe Data Ventes,04:00,08:00,'https://wiki.company.internal/databricks/runbooks/etl_finance_pnl'
+        -- 1002,P2,Équipe Data Engineering,04:30,<SLA>,<URL_RUNBOOK>
+        -- 1003,P2,<OWNER>,<HEURE>,<SLA>,<URL_RUNBOOK>
+         --1004,P3,<OWNER>,05:00,<SLA>,<URL_RUNBOOK>
+
+--MERGE qui met à jour les lignes existantes dans mco.ref.job_registry
+
+CREATE OR REPLACE TEMP VIEW src AS
+SELECT * FROM read_files('/Volumes/<catalog>/<schema>/<volume>/jobs_p1.csv',
+                         format => 'csv', header => true);
+
+MERGE INTO mco.ref.job_registry t
+USING src s ON t.job_id = s.job_id
+WHEN MATCHED THEN UPDATE SET
+  t.criticite = s.criticite, t.owner = s.owner, t.heure_prevue = s.heure_prevue,
+  t.sla_heure = s.sla_heure, t.runbook_url = s.runbook_url;
