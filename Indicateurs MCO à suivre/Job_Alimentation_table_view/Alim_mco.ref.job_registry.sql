@@ -29,6 +29,13 @@ WHERE actif = true
   AND (criticite IS NULL OR owner IS NULL)
 ORDER BY job_name ASC;
 
+
+--Pour une mises à jour au fil de l’eau
+--Pour un changement isolé (nouveau SLA, runbook rédigé)
+
+UPDATE mco.ref.job_registry
+SET runbook_url = '<URL_RUNBOOK>'
+WHERE job_id = '<JOB_ID>';
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Étape 3 : Enrichissement par les Owners / MCO (UPDATE)
 --2 méthodes de faire la saisie des informations des champs métier criticite,owner,heure_prevue,sla_heure,runbook_url de la table  mco.ref.job_registry:
@@ -75,3 +82,10 @@ USING src s ON t.job_id = s.job_id
 WHEN MATCHED THEN UPDATE SET
   t.criticite = s.criticite, t.owner = s.owner, t.heure_prevue = s.heure_prevue,
   t.sla_heure = s.sla_heure, t.runbook_url = s.runbook_url;
+
+--Pour une mises à jour au fil de l’eau
+--Pour un changement isolé (nouveau SLA, runbook rédigé)
+
+UPDATE mco.ref.job_registry
+SET runbook_url = '<URL_RUNBOOK>'
+WHERE job_id = '<JOB_ID>';
