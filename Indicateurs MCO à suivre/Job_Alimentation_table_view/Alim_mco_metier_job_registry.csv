@@ -1,6 +1,4 @@
---Étape 3(Alternative) Bis : chargement en masse des champs métier
---On va utiliser un fichier csv localisé dans un volume qui sera intérrogé par un MERGE pour remplir les champs métier.Après l’atelier avec les owners, l’équipe dépose un fichier jobs_p1.csv dans un Volume :
-
+--fichier jobs_p1.csv à déposer dans volume
 
          job_id,criticite,owner,heure_prevue,sla_heure,runbook_url
          1001,P1,Équipe Data Ventes,04:00,08:00,<URL_RUNBOOK>
