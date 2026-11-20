@@ -1,3 +1,0 @@
-table_name,criticite,colonne_ingestion,seuil_fraicheur_h,seuil_volumetrie_pct,job_id
-silver.sales.orders,P1,ingestion_ts,24,25,1001
-<catalog.schema.table>,P1,<colonne>,<heures>,<pct>,<JOB_ID>
