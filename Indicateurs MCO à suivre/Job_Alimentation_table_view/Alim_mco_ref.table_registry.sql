@@ -19,7 +19,7 @@ le tout à saisir en collaboration avec les owners dans le fichier tables_p1.csv
   
 Cette requete croise system.access.table_lineage (entity_type = 'JOB', event_date >= current_date() - 30) avec mco.ref.job_registry filtré sur g.criticite = 'P1'. Cela restreint le périmètre 
 aux tables effectivement touchées récemment par des pipelines critiques P1.*/
--------------------------------------------------********************************----------------------------------------------------------------------------------------------------------
+
 
   SELECT DISTINCT
   l.target_table_full_name AS table_name,
@@ -47,7 +47,7 @@ dans une table via system.information_schema.columns parce que son nom évoque u
 On la qualifie de « candidate » (et non pas encore « retenue ») car la requête ne peut pas deviner le sens métier réel d'une colonne uniquement à son nom. 
 Une table peut avoir plusieurs colonnes correspondantes (par exemple inserted_at à la création de la ligne et updated_at lors d'une modification), 
 ou n'en avoir aucune si l'horodatage est nommé autrement (ex. event_ts, business_date).*/
----------------------------------------------------********************************---------------------------------------------------------------------------------------------------------
+
 SELECT concat_ws('.', table_catalog, table_schema, table_name) AS table_name, column_name
 FROM system.information_schema.columns
 WHERE data_type IN ('TIMESTAMP', 'TIMESTAMP_NTZ')
@@ -64,9 +64,8 @@ Les informations obtenues des 2 premières requetes( Table_name, colonne_ingesti
 ou owner(criticite,seuil_fraicheur_h,seuil_volumetrie_pct) le tout saisi dans le fichier tables_p1.csv et déposé au volume avant d'etre merger.
 
 Fichier de référence métier (tables_p1.csv à déposer dans un Volume Unity Catalog) : fournit les valeurs validées avec les owners (colonne_ingestion, seuil_fraicheur_h, seuil_volumetrie_pct, criticite, job_id), 
-puis applique un MERGE INTO sur mco.ref.table_registry.
---------------------------------------------------------********************************--------------------------------------------------------------------------------------------------
-fichier tables_p1.csv à charger dans volume*/
+puis applique un MERGE INTO sur mco.ref.table_registry.*/
+
 
 table_name,criticite,colonne_ingestion,seuil_fraicheur_h,seuil_volumetrie_pct,job_id)
 silver.sales.orders,P1,ingestion_ts,24,25,1001
@@ -78,10 +77,17 @@ silver.sales.orders,P1,ingestion_ts,24,25,1001
 
 --Après l’atelier avec les owners, l’équipe dépose un fichier jobs_p1.csv dans un Volume (disponible dans Alim_mco_metier_job_registry.csv)
 --Puis un MERGE met à jour les lignes existantes :*/
------------------------------------------------------------------------***********************----------------------------------------------------------------------------------------
 
 
+  
+CREATE OR REPLACE TEMP VIEW src AS
+SELECT * FROM read_files('/Volumes/<catalog>/<schema>/<volume>/tables_p1.csv',
+                         format => 'csv', header => true);
 
+MERGE INTO mco.ref.table_registry t
+USING src s ON t.table_name = s.table_name
+WHEN MATCHED THEN UPDATE SET *
+WHEN NOT MATCHED THEN INSERT *;
 
 
 -------------------------------------------------------------------********************************--------------------------------------------------------------------------------------
@@ -112,12 +118,12 @@ en erreur (TABLE_OR_VIEW_NOT_FOUND) et de faire échouer le contrôle matinal de
 - Contrôle 2: Les tables écrites par des jobs P1 mais absentes du referentiel:
 
 Ces deux requêtes ci-dessous doivent renvoyer zéro ligne.
------------------------------------------------------------------********************************-----------------------------------------------------------------------------------
+
 
 -- Contrôle 1: Tables du referentiel qui n'existent pas (faute de frappe, table supprimée) 
--- Une sortie avec des valeurs nulles pour t.full_name signifie soit il y'a erreur de saisi des données(en saisissant le table_name dans csv) sur fichier csv devant alimenter la table 
--- de reference mco.ref.table_registry ou que la table a probablement été supprimée ou renommée dans Unity Catalog, ou l'utilisateur/service principal exécutant la requête n'a pas 
--- les privilèges nécessaires(en gros le systeme databricks ne reconnait pas la ou les tables présentes dans notre reference mco.ref.table_registry.*/
+             Une sortie avec des valeurs nulles pour t.full_name signifie soit il y'a erreur de saisi des données(en saisissant le table_name dans csv) sur fichier csv devant alimenter la table 
+             de reference mco.ref.table_registry ou que la table a probablement été supprimée ou renommée dans Unity Catalog, ou l'utilisateur/service principal exécutant la requête n'a pas 
+             les privilèges nécessaires(en gros le systeme databricks ne reconnait pas la ou les tables présentes dans notre reference mco.ref.table_registry.*/
 
 SELECT r.table_name, t.full_name
 FROM mco.ref.table_registry r
@@ -125,10 +131,11 @@ LEFT JOIN (SELECT concat_ws('.', table_catalog, table_schema, table_name) AS ful
            FROM system.information_schema.tables) t ON r.table_name = t.full_name
 WHERE t.full_name IS NULL;
 
--- Contrôle 2: Tables écrites par des jobs P1 mais absentes du referentiel
---(Si aucune ligne n'est retournée, cela signifie que toutes les tables écrites par des jobs P1 sur 30 jours et remontées par table_lineage sont déjà présentes dans mco.ref.table_registry.)
--- si des noms de tables apparaissent dans la sortie alors des tables écrites par des jobs P1 au cours des 30 derniers jours ne figurent pas encore dans mco.ref.table_registry
--- Il peut s'agir d'une table métier critique non encore déclarée dans mco.ref.table_registry → angle mort de surveillance fraîcheur/volumétrie à faire qualifier avec l'owner et ajouter à tables_p1.csv / au référentiel.
+/*-- Contrôle 2: Tables écrites par des jobs P1 mais absentes du referentiel
+             (Si aucune ligne n'est retournée, cela signifie que toutes les tables écrites par des jobs P1 sur 30 jours et remontées par table_lineage sont déjà présentes dans mco.ref.table_registry.)
+             si des noms de tables apparaissent dans la sortie alors des tables écrites par des jobs P1 au cours des 30 derniers jours ne figurent pas encore dans mco.ref.table_registry
+             Il peut s'agir d'une table métier critique non encore déclarée dans mco.ref.table_registry → angle mort de surveillance fraîcheur/volumétrie à faire qualifier avec l'owner et ajouter à tables_p1.csv / au référentiel.*/
+
 SELECT DISTINCT l.target_table_full_name
 FROM system.access.table_lineage l
 JOIN mco.ref.job_registry g ON l.entity_id = g.job_id
