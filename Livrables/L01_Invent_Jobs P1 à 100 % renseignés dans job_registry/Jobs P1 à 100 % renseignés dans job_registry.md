@@ -2,7 +2,10 @@
 
 **Requêtes SQL concernées:** Inventaire des jobs P1 à 100 % renseignés/non renseignés.sql
 
+**Critère de validation:** Jobs P1 à 100 % renseignés dans job_registry ; validé par le management
+
 **Livrables: 3 tableaux**
+
 
 - Tableau Inventaire global (avec dépendances amont/aval et tables produites via tables système)
   
@@ -19,46 +22,51 @@
 
 >
 
-WITH tasks_agg AS (
-  SELECT
-    job_id,
-    CONCAT_WS(', ', COLLECT_SET(task_key)) AS tasks_list,
-    CONCAT_WS(', ', COLLECT_SET(
-      CASE WHEN SIZE(depends_on) > 0 THEN CONCAT(task_key, ' <- ', ARRAY_JOIN(TRANSFORM(depends_on, x -> x.task_key), '+')) END
-    )) AS dependances_amont_aval
-  FROM system.lakeflow.job_tasks
-  GROUP BY job_id
-),
-tables_agg AS (
-  SELECT
-    entity_id AS job_id,
-    CONCAT_WS(', ', COLLECT_SET(
-      CONCAT_WS('.', target_table_catalog, target_table_schema, target_table_name)
-    )) AS tables_produites
-  FROM system.access.table_lineage
-  WHERE entity_type = 'JOB'
-    AND target_table_name IS NOT NULL
-  GROUP BY entity_id
-)
-SELECT
-  r.job_id,
-  r.job_name,
-  r.criticite,
-  r.owner,
-  r.heure_prevue AS planning_paris,
-  r.sla_heure AS sla_paris,
-  COALESCE(ta.dependances_amont_aval, 'Non renseigne / Aucune') AS dependances_amont_aval,
-  COALESCE(tb.tables_produites, 'Non renseigne / Aucune') AS tables_produites,
-  r.runbook_url,
-  r.actif
-FROM mco.ref.job_registry r
-LEFT JOIN tasks_agg ta
-  ON r.job_id = CAST(ta.job_id AS STRING)
-LEFT JOIN tables_agg tb
-  ON r.job_id = CAST(tb.job_id AS STRING)
-WHERE r.actif = true
-ORDER BY r.criticite ASC, r.job_name ASC;
+     WITH tasks_agg AS (
+       SELECT
+             job_id,
+             CONCAT_WS(', ', COLLECT_SET(task_key)) AS tasks_list,
+             CONCAT_WS(', ', COLLECT_SET(
+             CASE WHEN SIZE(depends_on) > 0 THEN CONCAT(task_key, ' <- ', ARRAY_JOIN(TRANSFORM(depends_on, x -> x.task_key), '+')) END
+             )) AS dependances_amont_aval
+        FROM system.lakeflow.job_tasks
+        GROUP BY job_id
+        ),
+       tables_agg AS (
+       SELECT
+              entity_id AS job_id,
+              CONCAT_WS(', ', COLLECT_SET(
+              CONCAT_WS('.', target_table_catalog, target_table_schema, target_table_name)
+              )) AS tables_produites
+        FROM system.access.table_lineage
+        WHERE entity_type = 'JOB'
+        AND target_table_name IS NOT NULL
+        GROUP BY entity_id
+        )
+        SELECT
+               r.job_id,
+               r.job_name,
+               r.criticite,
+               r.owner,
+               r.heure_prevue AS planning_paris,
+               r.sla_heure AS sla_paris,
+               COALESCE(ta.dependances_amont_aval, 'Non renseigne / Aucune') AS dependances_amont_aval,
+               COALESCE(tb.tables_produites, 'Non renseigne / Aucune') AS tables_produites,
+               r.runbook_url,
+               r.actif
+               FROM mco.ref.job_registry r
+               LEFT JOIN tasks_agg ta
+               ON r.job_id = CAST(ta.job_id AS STRING)
+               LEFT JOIN tables_agg tb
+               ON r.job_id = CAST(tb.job_id AS STRING)
+               WHERE r.actif = true
+               ORDER BY r.criticite ASC, r.job_name ASC;
 >
+
+
+<img width="1846" height="177" alt="image" src="https://github.com/user-attachments/assets/1161485e-477f-49ec-b274-7bb7483303af" />
+
+
 
 ## 2- Inventaire des Jobs P1 complets à 100 %
 
