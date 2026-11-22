@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
-                                      L01  --Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites)
+-                                      L01  --Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites)
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Objectif: Il permet notamment d'identifier les jobs critiques, leurs responsables, leurs horaires, leur niveau de service, leurs dépendances et les tables qu'ils alimentent.
 --Ordre de création: Livrable 1 ( après création de mco.ref.job_registry, mco.monitoring.v_job_runs, system.access.table_lineage)
