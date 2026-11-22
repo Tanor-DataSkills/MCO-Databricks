@@ -1,8 +1,8 @@
---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --                                                                     mco.monitoring.v_job_runs 
---Objectif:  bâtir un socle d'observabilité des jobs(la view socle des jobs et leurs executions); tout le cycle de vie du job + caracteristiques mco.La première a etre créer sur laquelle repose d'autres views et plusieurs indicateurs.
+--Objectif:  bâtir un socle d'observabilité des jobs(la view socle des jobs et leurs executions); tout le cycle de vie du job + caracteristiques mco.La première a etre créer sur laquelle repose d'autres views et plusieurs indicateurs(dashboards).
 --Ordre de création: 1 ( après création de mco.ref.job_registry)
----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 
 --Sous requetes: runs + jobs + mco.ref.job_registry
 --runs: La table system.lakeflow.job_run_timeline est une table d'événements/périodes (et non une ligne figée par run)
