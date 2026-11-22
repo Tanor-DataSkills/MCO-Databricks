@@ -3,7 +3,7 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Objectif: Il permet notamment d'identifier les jobs critiques, leurs responsables, leurs horaires, leur niveau de service, leurs dépendances et les tables qu'ils alimentent.
 --Ordre de création: Livrable 1 ( après création de mco.ref.job_registry, mco.monitoring.v_job_runs, system.access.table_lineage)
------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
 
 --Sous requetes: runs + obs + lin + prod + cons + dep + tp + am + av + mco.ref.job_registry
 --runs: la view mco.monitoring.v_job_runs (vue de télémétrie d'exécution) : historise les lancements de jobs (job_id, run_id, etat, duree_s, start_time en UTC, trigger_type)     
