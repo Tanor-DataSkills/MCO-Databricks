@@ -1,3 +1,18 @@
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+-                                                        mco.monitoring.v_table_freshness
+       
+--Objectif: Préparer les colonnes devant servir dans le calcul des indicateurs(taux de reussite de la nuit, les echecs de la nuit) dans la mco.monitoring.v_morning_status
+--Ordre de création: 3 ( après création de mco.monitoring.v_job_runs & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
+--Livrables concernés: L02_Rapport_MCO_matinal_7h30 --> mco.monitoring.v_morning_status --> D1    
+--Views ou tables appelée par : mco.monitoring.v_morning_status
+----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
+
+--Sources ou Sous requetes: 
+  --derniere
+  --mco.ops.table_metrics
+  --mco.ref.table_registry
+  --mco.ref.table_registry
+
 CREATE OR REPLACE VIEW mco.monitoring.v_table_freshness AS
 WITH derniere AS (
   SELECT table_name,
