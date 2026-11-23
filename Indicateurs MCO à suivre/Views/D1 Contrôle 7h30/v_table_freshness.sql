@@ -11,7 +11,6 @@
   --derniere
   --mco.ops.table_metrics
   --mco.ref.table_registry
-  --mco.ref.table_registry
 
 CREATE OR REPLACE VIEW mco.monitoring.v_table_freshness AS
 WITH derniere AS (
