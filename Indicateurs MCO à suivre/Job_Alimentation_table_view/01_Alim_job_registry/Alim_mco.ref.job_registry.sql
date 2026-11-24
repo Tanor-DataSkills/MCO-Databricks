@@ -9,7 +9,7 @@ sla_heure STRING COMMENT 'HH:mm, heure de Paris', runbook_url STRING, actif BOOL
 
 # Ordre d'alimentation: 1 ( après création des tables)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
-# Job: 
+# Job: L'alimentation de cette table se fait via un pipeline en deux étapes : Automatisation de la structure puis Enrichissement de la gouvernance MCO.
 # Table ou View appelée par : mco_ref.table_registry.sql
 # Sources ou Sous requetes: system.lakeflow.jobs, ('/Volumes/<catalog>/<schema>/<volume>/jobs_p1.csv')
 ##############################################################################################################################################################################################################################*/
