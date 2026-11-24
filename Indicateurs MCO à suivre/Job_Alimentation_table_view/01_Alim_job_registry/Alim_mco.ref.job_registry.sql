@@ -1,3 +1,22 @@
+/*##############################################################################################################################################################################################################################
+#                                                               mco.ref.job_registry
+
+# Objectif: Ce jeu de requêtes met en place un référentiel de gouvernance opérationnelle (mco.ref.job_registry) alimenté automatiquement depuis les tables système Unity Catalog (system.lakeflow.jobs) 
+# puis enrichi manuellement (ou via workflow/formulaire) par les équipes MCO et Data Owners.Elle doit etre controlé et alimenté régulièrement avec les équipe lors des réunions.
+
+# La table mco.ref.job_registry.sql contient les champs job_id STRING, job_name STRING, criticite STRING, owner STRING, heure_prevue STRING COMMENT 'HH:mm, heure de Paris',
+sla_heure STRING COMMENT 'HH:mm, heure de Paris', runbook_url STRING, actif BOOLEAN);
+
+# Ordre d'alimentation: 1 ( après création des tables)
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
+# Job: 
+# Table ou View appelée par : mco_ref.table_registry.sql
+# Sources ou Sous requetes: system.lakeflow.jobs, ('/Volumes/<catalog>/<schema>/<volume>/jobs_p1.csv')
+##############################################################################################################################################################################################################################*/
+
+
+
+
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Étape 1 : Synchronisation automatique (Job planifié)
 --Ce script MERGE doit être exécuté de manière quotidienne ou horaire dans un workflow Databricks pour intégrer automatiquement les nouveaux jobs et désactiver les anciens
