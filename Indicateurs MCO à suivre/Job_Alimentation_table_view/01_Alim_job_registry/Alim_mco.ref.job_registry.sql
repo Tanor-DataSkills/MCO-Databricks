@@ -15,8 +15,6 @@ sla_heure STRING COMMENT 'HH:mm, heure de Paris', runbook_url STRING, actif BOOL
 ##############################################################################################################################################################################################################################*/
 
 
-
-
 --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
 --Étape 1 : Synchronisation automatique (Job planifié)
 --Ce script MERGE doit être exécuté de manière quotidienne ou horaire dans un workflow Databricks pour intégrer automatiquement les nouveaux jobs et désactiver les anciens
