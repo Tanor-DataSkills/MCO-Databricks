@@ -1,11 +1,16 @@
-##########################################################################################################################################################################################
+##############################################################################################################################################################################################################################
 #                                                               mco.ops.table_metrics
-##########################################################################################################################################################################################
-# Ordre d'alimentation:
-# Job:
-# Code à coller dans un notebook Databricks, puis le planifier comme job
+
+# Objectif: Remplir les champs "table_name", "mesure_ts", "max_ingestion_ts", "row_count" de la table mco.ops.table_metrics devant servir dans le calcul des indicateurs(fraîcheur et de volumétrie) dans la mco.monitoring.v_freshness
 
 # La table mco.ops.table_metrics collecte périodiquement des métriques de fraîcheur et de volumétrie sur un ensemble de tables référencées, puis les historise pour alimenter un tableau de bord ou des alertes.
+
+# Ordre d'alimentation: 3 ( après création de mco.monitoring.v_job_runs & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
+# Job: Code à coller dans un notebook Databricks, puis le planifier comme job
+# Table ou View appelée par : v_table_freshness.sql
+# Sources ou Sous requetes: mco.ref.table_registry
+##############################################################################################################################################################################################################################
 
 # Collecter périodiquement des métriques de fraîcheur et de volumétrie sur la table mco.ref.table_registry, puis les historiser pour alimenter un tableau de bord ou des alertes
 
