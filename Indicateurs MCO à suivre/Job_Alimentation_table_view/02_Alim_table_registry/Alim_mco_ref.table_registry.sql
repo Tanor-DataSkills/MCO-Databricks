@@ -1,5 +1,18 @@
-/*La table mco.ref.table_registry associe chaque table Delta/Unity Catalog à son job_id producteur dans mco.ref.job_registry, sa criticité, sa colonne d'ingestion 
-et ses seuils de surveillance (seuil_fraicheur_h, seuil_volumetrie_pct)
+
+/*##############################################################################################################################################################################################################################
+#                                                               mco.ref.table_registry
+
+# Objectif: Alimenter les champs  table_name STRING, criticite STRING, colonne_ingestion STRING, seuil_fraicheur_h INT, seuil_volumetrie_pct INT, job_id STRING); de la table mco.ref.table_registry devant servir 
+# dans le calcul des indicateurs(fraîcheur et de volumétrie) dans la table mco.ops.table_metrics.py
+
+# La table mco.ref.table_registry associe chaque table Delta/Unity Catalog à son job_id producteur dans mco.ref.job_registry, sa criticité, sa colonne d'ingestion et ses seuils de surveillance (seuil_fraicheur_h, seuil_volumetrie_pct)
+
+# Ordre d'alimentation: 2 ( après création et alimentation de mco.ref.job_registry )
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
+# Job: Ce Code à coller dans un notebook Databricks, puis le planifier comme job qui doit être exécuté de manière quotidienne ou horaire dans un workflow Databricks pour intégrer automatiquement
+# Table ou View appelée par : mco.ops.table_metrics.py
+# Sources ou Sous requetes: system.access.table_lineage, mco.ref.job_registry, system.information_schema.columns
+##############################################################################################################################################################################################################################
 
 La table mco.ref.table_registry s’alimente en cinq(5) étapes : 
 
