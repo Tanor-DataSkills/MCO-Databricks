@@ -1,3 +1,5 @@
+# Collecter périodiquement des métriques de fraîcheur et de volumétrie sur la table mco.ref.table_registry, puis les historiser pour alimenter un tableau de bord ou des alertes
+
 from pyspark.sql import functions as F
 rows = []
 for r in spark.table("mco.ref.table_registry").collect():
