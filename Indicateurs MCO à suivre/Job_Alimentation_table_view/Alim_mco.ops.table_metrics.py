@@ -5,7 +5,7 @@
 
 # La table mco.ops.table_metrics collecte périodiquement des métriques de fraîcheur et de volumétrie sur un ensemble de tables référencées, puis les historise pour alimenter un tableau de bord ou des alertes.
 
-# Ordre d'alimentation: 3 ( après création et alimentation de mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
+# Ordre d'alimentation: 2 ( après création et alimentation de mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
 # Job: Ce Code à coller dans un notebook Databricks, puis le planifier comme job qui doit être exécuté de manière quotidienne ou horaire dans un workflow Databricks pour intégrer automatiquement
 # Table ou View appelée par : v_table_freshness.sql
