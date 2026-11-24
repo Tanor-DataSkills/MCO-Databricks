@@ -1,6 +1,11 @@
 ##########################################################################################################################################################################################
+#                                                               mco.ops.table_metrics
+##########################################################################################################################################################################################
+# Ordre d'alimentation:
+# Job:
 # Code à coller dans un notebook Databricks, puis le planifier comme job
 
+# La table mco.ops.table_metrics collecte périodiquement des métriques de fraîcheur et de volumétrie sur un ensemble de tables référencées, puis les historise pour alimenter un tableau de bord ou des alertes.
 
 # Collecter périodiquement des métriques de fraîcheur et de volumétrie sur la table mco.ref.table_registry, puis les historiser pour alimenter un tableau de bord ou des alertes
 
