@@ -1,29 +1,15 @@
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---                                                        mco.monitoring.v_morning_status
-       
---Objectif: Préparer les colonnes devant servir dans le calcul des indicateurs(taux de reussite de la nuit, les echecs de la nuit) dans la mco.monitoring.v_morning_status
---Ordre de création: 3 ( après création de mco.monitoring.v_job_runs & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
---Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
---View appelée par : mco.monitoring.v_morning_status
-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------       
 
 /*##############################################################################################################################################################################################################################
 #                                                               mco.monitoring.v_morning_status
 
-# Objectif: Alimenter les champs "table_name", "mesure_ts", "max_ingestion_ts", "row_count" de la table mco.ops.table_metrics devant servir dans le calcul des indicateurs(fraîcheur et de volumétrie) dans la mco.monitoring.v_freshness
-
-# La table mco.ops.table_metrics collecte périodiquement des métriques de fraîcheur et de volumétrie sur un ensemble de tables référencées, puis les historise pour alimenter un tableau de bord ou des alertes.
-
-# Ordre d'alimentation: 3 ( après création et alimentation de mco.ref.job_registry et mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
+# Objectif: Exclusivement dédié au calcul de l'indicateur statut global: ROUGE : au moins un job P1 en échec ou non démarré, ou une table P1 non fraîche. ORANGE : au moins un échec ou un non-démarré sur P2 ou P3. VERT : sinon.
+# Dépendances: 6 ( après création et alimentation de mco.ref.job_registry/mco.ref.table_registry/mco.monitoring.v_table_freshness/ mco.monitoring.v_night_status/mco.monitoring.v_jobs_not_started
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
-# Job: Ce Code à coller dans un notebook Databricks, puis le planifier comme job qui doit être exécuté de manière quotidienne ou horaire dans un workflow Databricks pour intégrer automatiquement
-# Table ou View appelée par : v_table_freshness.sql
+# Indicateurs: Statut global( Vert/Orange/Rouge) :La view  mco.monitoring.v_morning_status donne la couleur selon le résultat de l'execution du job
+# Table ou View appelée par :
 # Sources ou Sous requetes: mco.monitoring.v_night_status/mco.monitoring.v_table_freshness/
 ##############################################################################################################################################################################################################################*/
 
-
-
---Sources ou Sous requetes: mco.monitoring.v_job_runs
   
 CREATE OR REPLACE VIEW mco.monitoring.v_morning_status AS
 WITH echecs AS (
