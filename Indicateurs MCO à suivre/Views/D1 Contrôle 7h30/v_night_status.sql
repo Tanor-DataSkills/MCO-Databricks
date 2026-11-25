@@ -9,7 +9,7 @@
 # Ordre de création : 6 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql / v_table_freshness.sql / v_night_status)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->D1    
 # Indicateurs: 2
-    # Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) ------>  Carte Taux de reussite(%)
+    # Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) ------>  Carte Taux de reussite(sur databricks créer un widget : count(*), sum(CASE WHEN etat='SUCCEEDED' THEN 1 ELSE 0 END) et le taux = succès / count(*))
     # Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))---------------------------------------------------------> Tableau echecs de la nuit(Job/ Crit/ Run/ État/ Code/ Début/ Fin/ Durée (min))
 # Job: 
 # Table ou View appelée par : mco.monitoring.v_morning_status
