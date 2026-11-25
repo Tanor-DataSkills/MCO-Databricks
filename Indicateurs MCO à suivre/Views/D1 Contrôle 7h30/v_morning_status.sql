@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---                                                        mco.monitoring.v_job_runs
+--                                                        mco.monitoring.v_morning_status
        
 --Objectif: Préparer les colonnes devant servir dans le calcul des indicateurs(taux de reussite de la nuit, les echecs de la nuit) dans la mco.monitoring.v_morning_status
 --Ordre de création: 3 ( après création de mco.monitoring.v_job_runs & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
