@@ -7,9 +7,10 @@
          # pour faciliter la revue de début de journée / astreinte nocturne
 # Dépendances: 4 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/ v_job_runs.sql )
 # Ordre de création : 6 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql / v_table_freshness.sql / v_night_status)
-# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->>D1    
-# Indicateurs: Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) 
-#              & Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->D1    
+# Indicateurs: 2
+    # Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) ------>  Carte Taux de reussite(%)
+    # Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))---------------------------------------------------------> Tableau echecs de la nuit(Job/ Crit/ Run/ État/ Code/ Début/ Fin/ Durée (min))
 # Job: 
 # Table ou View appelée par : mco.monitoring.v_morning_status
 # Sources ou Sous requetes: mco.monitoring.v_job_runs
