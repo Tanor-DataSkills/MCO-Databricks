@@ -10,7 +10,7 @@
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->D1    
 # Indicateurs: 3
     # Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) ------>  Carte Taux de reussite(sur databricks créer un widget : count(*), sum(CASE WHEN etat='SUCCEEDED' THEN 1 ELSE 0 END) et le taux = succès / count(*))
-    # Runs de la nuit(Total des Runs) ------> Carte Runs de la nuit(sur databricks créer un widget : count(*))
+    # Runs de la nuit(Total des Runs) ---------------------------------------------------> Carte Runs de la nuit(sur databricks créer un widget : count(*))
     # Echecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))------------------> Carte Echecs (sur databricks créer un widget : sum(CASE WHEN etat IN ((FAILED, ERROR, TIMED_OUT) THEN 1 ELSE 0 END))
     # Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))------------------> Tableau echecs de la nuit(Job/ Crit/ Run/ État/ Code/ Début/ Fin/ Durée (min))
     
