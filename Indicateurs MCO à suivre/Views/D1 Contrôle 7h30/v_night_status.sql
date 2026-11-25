@@ -4,7 +4,8 @@
 
 # Objectif: La supervision des traitements nocturnes (batchs / jobs). Elle permet aux équipes d'exploitation de vérifier rapidement si les jobs de la nuit se sont bien déroulés, à quelle heure locale ils ont tourné et combien de temps ils ont pris.
 
-# Dépendances: 3 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.monitoring.v_job_runs
+# Dépendances: 4 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/ v_job_runs.sql )
+# Ordre de création : 6 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql / v_table_freshness.sql / v_night_status)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->>D1    
 # Indicateurs: Taux de réussite de la nuit(Runs SUCCEEDED / runs terminés, hors CANCELED et EN_COURS, depuis 20h (UTC) la veille) 
 #              & Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))
