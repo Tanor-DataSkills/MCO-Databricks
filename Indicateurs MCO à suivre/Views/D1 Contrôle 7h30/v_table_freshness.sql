@@ -4,7 +4,7 @@
 
 # Objectif: Fraîcheur de chaque table du référentiel.Préparer les colonnes devant servir dans le calcul des indicateurs(taux de reussite de la nuit, les echecs de la nuit) dans la mco.monitoring.v_morning_status
 
-# Ordre d'alimentation: 3 ( après création et alimentation de mco.ref.job_registry et mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
+# Dépendances: 3 ( après création et alimentation de mco.ref.job_registry et mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
 # Indicateurs: Tables critiques non fraîches(Âge depuis max_ingestion_ts > seuil du référentiel)
 # Job: 
