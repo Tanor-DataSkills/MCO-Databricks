@@ -3,14 +3,15 @@
 #                                                               mco.monitoring.v_morning_status
 
 # Objectif: Exclusivement dédié au calcul de l'indicateur statut global: ROUGE : au moins un job P1 en échec ou non démarré, ou une table P1 non fraîche. ORANGE : au moins un échec ou un non-démarré sur P2 ou P3. VERT : sinon.
-# Dépendances: 6 ( après création et alimentation de mco.ref.job_registry/mco.ref.table_registry/mco.monitoring.v_table_freshness/ mco.monitoring.v_night_status/mco.monitoring.v_jobs_not_started
-# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
+ 
+# Dépendances: 7 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/ v_job_runs.sql / v_table_freshness / v_night_status / v_jobs_not_started )
+# Ordre de création : 8 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql / v_table_freshness.sql / v_night_status / v_jobs_not_started / v_morning_status)
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1   
 # Indicateurs: Statut global( Vert/Orange/Rouge) :La view  mco.monitoring.v_morning_status donne la couleur selon le résultat de l'execution du job
 # Table ou View appelée par :
-# Sources ou Sous requetes: mco.monitoring.v_night_status/mco.monitoring.v_jobs_not_started/mco.monitoring.v_table_freshness/
+# Sources ou Sous requetes: mco.monitoring.v_night_status / mco.monitoring.v_jobs_not_started / mco.monitoring.v_table_freshness/
 ##############################################################################################################################################################################################################################*/
 
-  
 CREATE OR REPLACE VIEW mco.monitoring.v_morning_status AS
 WITH echecs AS (
   SELECT criticite, count(*) AS n FROM mco.monitoring.v_night_status
