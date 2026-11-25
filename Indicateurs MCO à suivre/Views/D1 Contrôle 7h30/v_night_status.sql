@@ -22,6 +22,6 @@ SELECT job_id, job_name, criticite, run_id, etat, termination_code, --Ne garder 
        duree_s
 FROM mco.monitoring.v_job_runs
 --Elle filtre les exécutions démarrées à partir de 20h00 la veille (00:00 du jour moins 4 heures), ce qui couvre typiquement les batchs nocturnes, les chargements de nuit et les traitements de début de matinée
-WHERE start_time >= date_trunc('day', current_timestamp()) - INTERVAL 4 HOURS; --
+WHERE start_time >= date_trunc('day', current_timestamp()) - INTERVAL 4 HOURS; 
 
 
