@@ -7,7 +7,7 @@
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
 # Indicateurs: Statut global( Vert/Orange/Rouge) :La view  mco.monitoring.v_morning_status donne la couleur selon le résultat de l'execution du job
 # Table ou View appelée par :
-# Sources ou Sous requetes: mco.monitoring.v_night_status/mco.monitoring.v_table_freshness/
+# Sources ou Sous requetes: mco.monitoring.v_night_status/mco.monitoring.v_jobs_not_started/mco.monitoring.v_table_freshness/
 ##############################################################################################################################################################################################################################*/
 
   
