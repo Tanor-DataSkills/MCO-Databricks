@@ -16,7 +16,7 @@
 ####################################################################################################################################################################################################################################################*/
 
 CREATE OR REPLACE VIEW mco.monitoring.v_night_status AS
-SELECT job_id, job_name, criticite, run_id, etat, termination_code, --Ne garder que les colonnes clés pour le triage opérationnel
+SELECT job_id, job_name, criticite, run_id, etat, termination_code, --Ne garder que les colonnes clés pour le triage opérationnel(Identification & criticité et Statut d'exécution)
        from_utc_timestamp(start_time, 'Europe/Paris') AS debut_paris,
        from_utc_timestamp(end_time, 'Europe/Paris')   AS fin_paris,
        duree_s
