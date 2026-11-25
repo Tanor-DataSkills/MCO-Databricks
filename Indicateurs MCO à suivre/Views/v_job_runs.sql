@@ -1,13 +1,16 @@
-------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
---                                                                     mco.monitoring.v_job_runs 
---Objectif:  bâtir un socle d'observabilité des jobs(la view socle des jobs et leurs executions); tout le cycle de vie du job + caracteristiques mco.La première a etre créer sur laquelle repose d'autres views et plusieurs indicateurs(dashboards).
---Ordre de création: 1 ( après création de mco.ref.job_registry)
--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+/*##############################################################################################################################################################################################################################
+#                                                              mco.monitoring.v_job_runs 
 
---Sous requetes: runs + jobs + mco.ref.job_registry
---runs: La table system.lakeflow.job_run_timeline est une table d'événements/périodes (et non une ligne figée par run)
---jobs: avoir un nom unique j.name pour chaque job-->La table system.lakeflow.jobs est une table SCD / historique des changements de configuration d'un job(des id_job en doublon, delete_time IS NOT NULL si job supprimé)
---Select final (runs + jobs + mco.ref.job_registry(Récupération des champs métiers mco): Enrichissement MCO et calcul d'indicateurs
+# Objectif: bâtir un socle d'observabilité des jobs(la view socle des jobs et leurs executions); tout le cycle de vie du job + caracteristiques mco.La première a etre créer sur laquelle repose d'autres views et plusieurs indicateurs(dashboards).
+ 
+# Dépendances: 3 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics)
+# Ordre de création : 4 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql)
+# Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1   
+# Indicateurs: view socle et central pour calcul des autres views
+# Table ou View appelée par :
+# Sources ou Sous requetes: system.lakeflow.job_run_timeline / system.lakeflow.jobs / mco.ref.job_registry / Select final (runs + jobs + mco.ref.job_registry(Récupération des champs métiers mco): Enrichissement MCO et calcul d'indicateurs
+
+##############################################################################################################################################################################################################################*/
 
 --Reconstruction du cycle de vie de chaque exécution(L'objectif est d'obtenir une seule ligne par exécution de job car une longue execution crée plusieurs lignes(run_id) qu'il faut consolider
 CREATE OR REPLACE VIEW mco.monitoring.v_job_runs AS
