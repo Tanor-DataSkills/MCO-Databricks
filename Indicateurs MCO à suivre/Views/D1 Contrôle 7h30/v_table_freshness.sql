@@ -6,6 +6,7 @@
 
 # Ordre d'alimentation: 3 ( après création et alimentation de mco.ref.job_registry et mco.ref.table_registry & Inventaire des jobs (criticité, owner, planning, SLA, dépendances, tables produites).sql) 
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
+# Indicateurs: Tables critiques non fraîches(Âge depuis max_ingestion_ts > seuil du référentiel)
 # Job: 
 # Table ou View appelée par : mco.monitoring.v_morning_status
 # Sources ou Sous requetes: derniere, mco.ops.table_metrics, mco.ref.table_registry
