@@ -32,6 +32,6 @@ les jobs planifiés et non démarrés les tables système ne détiennent pas l'i
      ON r.job_id = t.job_id
 --Ne conserver dans la jointure que les exécutions démarrées depuis minuit aujourd'hui, tout en gardant dans le résultat les jobs n'ayant aucune exécution aujourd'hui (grâce au LEFT JOIN)
      AND t.period_start_time >= date_trunc('day', current_timestamp())  
-     WHERE t.job_id IS NULL
+     WHERE t.job_id IS NULL   --Job n'ayant aucune exécution démarrée
      AND r.heure_prevue < current_timestamp();
 >
