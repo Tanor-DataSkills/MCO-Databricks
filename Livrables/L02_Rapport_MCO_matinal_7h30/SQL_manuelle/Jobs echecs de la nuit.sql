@@ -5,10 +5,10 @@
 #l'astreinte ou le triage d'incidents). Elle sert de base au contrôle matinal (type /check7h30) pour repérer les anomalies impactant les rapports métiers de la journée.
 
 # Dépendances: 1 (system.lakeflow.job_run_timeline)
-# Ordre de création : 3 (Avoir les droits d'accèd pour system.lakeflow.job_run_timeline)
+# Ordre de création : 3 (Après création Jobs echec-reussis.sql / Jobs planifiés-non démarés.sql)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->Rapport 3 premier jours(manuel)  
 # Indicateurs: Listes des jobs échoués / Remplir le tableau étail des anomalies(Job, run ID, statut, heure)
-# Sources ou Sous requetes: system.lakeflow.job_run_timeline
+# Sources ou Sous requetes: Avoir les droits d'accès pour system.lakeflow.job_run_timeline
 ##############################################################################################################################################################################################################################*/
 
 SELECT j.name, t.job_id, t.run_id, t.result_state,
