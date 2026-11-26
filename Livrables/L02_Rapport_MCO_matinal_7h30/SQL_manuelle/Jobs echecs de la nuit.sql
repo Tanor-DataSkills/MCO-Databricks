@@ -1,13 +1,13 @@
 /*##############################################################################################################################################################################################################################
-#                                                               Jobs echec-reussis.sql
+#                                                               Jobs echecs de la nuit.sql
 
-# Cette requête sert à superviser et diagnostiquer les exécutions de jobs qui ne se sont pas terminées avec succès sur une fenêtre temporelle récente (typiquement pour le suivi de production,
+# Objectif: Cette requête sert à superviser et diagnostiquer les exécutions de jobs qui ne se sont pas terminées avec succès sur une fenêtre temporelle récente (typiquement pour le suivi de production,
 #l'astreinte ou le triage d'incidents). Elle sert de base au contrôle matinal (type /check7h30) pour repérer les anomalies impactant les rapports métiers de la journée.
 
 # Dépendances: 1 (system.lakeflow.job_run_timeline)
 # Ordre de création : 3 (Avoir les droits d'accèd pour system.lakeflow.job_run_timeline)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->Rapport 3 premier jours(manuel)  
-# Indicateurs: Listes des jobs échoués / Remplir le tableau étail des anomalies(
+# Indicateurs: Listes des jobs échoués / Remplir le tableau étail des anomalies(Job, run ID, statut, heure)
 # Sources ou Sous requetes: system.lakeflow.job_run_timeline
 ##############################################################################################################################################################################################################################*/
 
