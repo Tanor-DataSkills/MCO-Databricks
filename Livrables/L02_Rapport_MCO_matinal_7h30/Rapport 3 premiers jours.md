@@ -21,7 +21,7 @@ Cette requête SQL calcule un indicateur de synthèse des exécutions de jobs su
 
 **Taux de succes = 41/48 = 85,4%**
 
-### Requête 01 : jobs planifiés non démarrés (à adapter à votre référentiel)
+### B- Requête 01 : jobs planifiés non démarrés (à adapter à votre référentiel)
 
 les jobs planifiés et non démarrés les tables système ne détiennent pas l'information. Il faut donc créer une table référentielle mco.referentiel_jobs (job_id, criticité, heure prévue, SLA, owner), alimenté une fois par l’API Jobs (GET /api/2.1/jobs/list, champ schedule) puis enrichi à la main. Le total « 42 planifiés » est le nombre de lignes de ce référentiel attendues la nuit.
 
@@ -43,7 +43,7 @@ Liste des jobs bien présents dans le reférentiel mais pas démarrés(absent da
 
 **Jobs planifiés non démarrés = 2**
 
-### B- Requête 02 : Détail des incidents (Détection globale des incidents récents « échecs de la nuit » (Échecs et non-démarrés))
+### C- Requête 02 : Détail des incidents (Détection globale des incidents récents « échecs de la nuit » (Échecs et non-démarrés))
 
 En MCO (Maintien en Condition Opérationnelle), cette requête sert à superviser et diagnostiquer les exécutions de jobs qui ne se sont pas terminées avec succès sur une fenêtre temporelle récente (typiquement pour le suivi de production, l'astreinte ou le triage d'incidents).
 Elle sert de base au contrôle matinal (type /check7h30) pour repérer les anomalies impactant les rapports métiers de la journée.
@@ -92,7 +92,7 @@ Elle sert de base au contrôle matinal (type /check7h30) pour repérer les anoma
 • **Action et statut :** saisis à la main, ou récupérés du ticketing
 
 
-### C- requête 03: Dérive de durée (dernier run vs médiane 30 j)
+### D- requête 03: Dérive de durée (dernier run vs médiane 30 j)
 
 Son objectif principal est de détecter les dérives de performances et l'instabilité temporelle des jobs sur une fenêtre glissante de 30 jours, en s'appuyant sur les tables système d'Unity Catalog (system.lakeflow.job_run_timeline). Elle met en lumière les traitements dont le temps d'exécution maximal dépasse de plus de 50% ($ratio > 1.5$) leur temps médian habituel, signalant un risque potentiel sur les SLA de restitution des données.
 
@@ -144,7 +144,7 @@ il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de
 
 **Contrôles data**
 
-### Requête 05: Santé d’une table Delta (fraîcheur, petits fichiers)
+### E- Requête 05: Santé d’une table Delta (fraîcheur, petits fichiers)
 
 
 **Contrôles data : fraîcheur OK sur 11 tables clés sur 12. silver.sales.orders : dernière ingestion J-1 18:05 (KO)**
@@ -206,7 +206,7 @@ il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de
 - Après publication, ouvrez ou complétez les incidents du registre (avec detecte_ts) et archivez le rapport
 
 
-### D- Requête 04: Tâche en cause dans un run  - Analyse complémentaire (System Tables - Niveau Tasks / Erreurs)
+### F- Requête 04: Tâche en cause dans un run  - Analyse complémentaire (System Tables - Niveau Tasks / Erreurs)
 
 Maintenant que le constat est fait et que le rapport matinal est mis à la disposition des équipes, on doit mettre en place une fiche d'incident pour chacune des erreurs.
 L'objectif  de cette requête est d'effectuer un diagnostic de niveau 2 (investigation d'incident) suite à la détection d'un run global en échec. Puisque la requête 1 a identifié que les run_id = 983472,48211, 48230  ont échoué, cette requête liste toutes les tâches qui composaient ce workflow pour identifier la tâche exacte qui a fait échouer l'ensemble du DAG. 
