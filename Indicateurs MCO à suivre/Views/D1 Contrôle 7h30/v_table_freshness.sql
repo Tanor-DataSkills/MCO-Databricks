@@ -7,8 +7,8 @@
 # Dépendances: 4 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/ )
 # Ordre de création : 5 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
-# Indicateurs: Tables critiques non fraîches(Âge depuis max_ingestion_ts > seuil du référentiel)
-         # Tables non fraîches ( Durée du dernier run réussi / médiane des runs réussis sur 30 jours ; alerte si > 1,5 ) ------> Carte Dérives de durée(sur databricks créer un widget : count(*)) 
+# Indicateurs: 1
+         # Tables critiques non fraîches(Âge depuis max_ingestion_ts > seuil du référentiel) ------> Carte Tables non fraîches(sur databricks créer un widget : count(*)) basé sur SELECT * FROM mco.monitoring.v_table_freshness WHERE ge_h > t.seuil_fraicheur_h )
 # Job: 
 # Table ou View appelée par : mco.monitoring.v_morning_status
 # Sources ou Sous requetes: derniere, mco.ops.table_metrics, mco.ref.table_registry
