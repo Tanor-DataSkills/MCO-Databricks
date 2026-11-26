@@ -14,7 +14,7 @@
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1   
 # Indicateurs: 1
     # Dérives de durée ( Durée du dernier run réussi / médiane des runs réussis sur 30 jours ; alerte si > 1,5 ) ------> Carte Dérives de durée(sur databricks créer un widget : count(*)) basé sur SELECT * FROM mco.monitoring.v_duration_drift WHERE ratio > 1.5 AND criticite IN ('P1','P2'))
-    # Dérives de durée ( Durée du dernier run réussi / médiane des runs réussis sur 30 jours ; alerte si > 1,5 )-------> Tableau dérive de durée(Job/ Crit/ Run/ État/ Code/ Début/ Fin/ Durée (min))
+    # Dérives de durée ( Durée du dernier run réussi / médiane des runs réussis sur 30 jours ; alerte si > 1,5 )-------> Tableau dérive de durée(job_id / job_name / criticite / mediane_s / ratio)
 # Table ou View appelée par :
 # Sources ou Sous requetes: mco.monitoring.v_job_runs /
 ##############################################################################################################################################################################################################################*/
