@@ -1,3 +1,8 @@
+# Objectif: Son objectif principal est de détecter les dérives de performances et l'instabilité temporelle des jobs sur une fenêtre glissante de 30 jours, en s'appuyant sur les tables système d'Unity Catalog (system.lakeflow.job_run_timeline). Elle met en lumière les traitements dont le temps d'exécution maximal dépasse de plus de 50% 
+#(ratio >1.5) leur temps médian habituel, signalant un risque potentiel sur les SLA de restitution des données.
+
+# Il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de savoir la cause racine qui repose sur l'inspection de quatre grands coupables en production.
+
 WITH r AS (
   SELECT job_id, run_id,
        unix_timestamp(period_end_time) - unix_timestamp(period_start_time) AS dur
