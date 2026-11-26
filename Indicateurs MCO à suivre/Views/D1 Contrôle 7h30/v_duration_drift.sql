@@ -4,7 +4,11 @@
 # Objectif: La dérive de la durée permet de lister les jobs ayant réussi mais sur une durée anormalement longue.Son objectif principal est de détecter les dérives de performances 
           # et l'instabilité temporelle des jobs sur une fenêtre glissante de 30 jours, en s'appuyant sur les tables système d'Unity Catalog (system.lakeflow.job_run_timeline). 
           # Elle met en lumière les traitements dont le temps d'exécution maximal dépasse de plus de 50% ($ratio > 1.5$) leur temps médian habituel, signalant un risque potentiel sur les SLA de restitution des données
- 
+# Lecture rapide en MCO :
+--job_id = 101 (ing_facturation_quotidienne) : ratio = 1.02 (1650 s contre 1620 s de médiane, sous le p95 de 1890 s) → fonctionnement normal.
+--job_id = 102 (agg_ventes_horaires) : ratio = 1.53 (2290 s contre 1500 s de médiane, mais encore sous le p95 de 2400 s) → ralentissement notable à surveiller, cohérent avec le dépassement de SLA vu précédemment.
+--job_id = 105 (compaction_lakehouse_gold) : ratio = 3.10 (2790 s contre 900 s de médiane et dernier_s > p95_s) → forte dérive sur un job critique P1, action MCO recommandée (vérifier le volume de fichiers, la taille du cluster ou les goulots d'étranglement).
+--job_id = 109 (purge_fichiers_temp) : ratio = 0.81 (195 s contre 240 s de médiane) → exécution plus rapide que la normale.
 # Dépendances: 4 ( après création et alimentation de mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/ v_job_runs.sql )
 # Ordre de création : 8 ( mco.ref.job_registry / mco.ref.table_registry / mco.ops.table_metrics/v_job_runs.sql / v_table_freshness.sql / v_night_status / v_jobs_not_started / v_morning_status / v_duration_drift)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1   
