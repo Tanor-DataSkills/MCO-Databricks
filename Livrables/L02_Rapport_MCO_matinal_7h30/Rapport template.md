@@ -20,12 +20,52 @@ Prochaine mise à jour : 08:15 | Dashboard : <lien>
 
 ### Format du message: Faites tenir l'essentiel dans les premières lignes, car beaucoup liront seulement l'aperçu :
 
-🟠 MCO 7h30 – 09/11/2026 – ORANGE
 
-42 jobs : 39 OK, 2 échecs, 1 non démarré | P1 impacté : ingest_sales_daily
+- Fréquence: Quotidien, avant 8h
+  
+- Contenu: Statut (vert, orange, rouge), jobs en échec ou non démarrés, dérives de durée, fraîcheur des données, actions en cours
 
-Risque SLA 08:00 : tableau Ventes J-1
 
-Actions : relance dès réception du fichier ERP (INC-2026-1109-01)
+RAPPORT MCO 7h30 – 2026-11-18
+Statut global : ROUGE
 
-Prochaine mise à jour : 08:15 | Dashboard :
+
+<img width="827" height="315" alt="image" src="https://github.com/user-attachments/assets/4b21d116-2bc9-4d17-8fae-32c1e9692213" />
+
+
+Contrôles effectués : 6/6
+
+Incidents ouverts :
+- INC-20261109-02 refresh_customer_360 (run 48230) [P2] Conflit Delta : ouvert
+- INC-20261109-01 ingest_sales_daily (run 48211) [P1] Source en retard : ouvert
+
+Incidents du jour :
+- aucun
+
+Notes : 
+
+- **P1 ingest_sales_daily (run 48211) :** échec à 03:12, fichier ERP absent de landing/sales. 
+
+   Équipe ERP contactée à 07:48. 
+
+   Relance (repair run) dès réception du fichier. 
+
+   Risque SLA 08:00 sur le tableau Ventes J-1.
+
+   INC-2026-1109-01, 3e occurrence en 30 j (PB-014).
+
+- **P2 refresh_customer_360 (run 48230) :** ConcurrentAppendException à 04:40, 2e occurrence (PB-015). 
+
+   Repair run prévu à 07:50, après la fin de load_crm_delta.
+
+- **P3 export_finance_gl :** non démarré (prévu 05:00), trigger désactivé après le déploiement. 
+
+   Réactiver le trigger puis lancer à la main.
+
+- **build_gold_orders :** 74 min contre 41 min en médiane (x1,8), à surveiller.
+
+- **Fraîcheur :** silver.sales.orders KO (dernière ingestion J-1 18:05), les 11 autres tables clés sont OK.
+
+- **Prochaine mise à jour :** 08:15.
+
+
