@@ -1,3 +1,6 @@
+# Cette requête sert à superviser et diagnostiquer les exécutions de jobs qui ne se sont pas terminées avec succès sur une fenêtre temporelle récente (typiquement pour le suivi de production,
+#l'astreinte ou le triage d'incidents). Elle sert de base au contrôle matinal (type /check7h30) pour repérer les anomalies impactant les rapports métiers de la journée.
+
 SELECT j.name, t.job_id, t.run_id, t.result_state,
        t.termination_code, t.period_start_time, t.period_end_time
 FROM system.lakeflow.job_run_timeline t
