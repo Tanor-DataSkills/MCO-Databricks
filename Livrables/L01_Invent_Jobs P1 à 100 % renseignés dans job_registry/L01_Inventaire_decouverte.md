@@ -65,3 +65,20 @@ Action :
 - Gestion des jobs infra-journaliers (horaires / micro-batch) : le calcul debut_med_min et la comparaison avec une heure_prevue unique génèrent des faux positifs (planning déclaré ≠ observé) sur les jobs qui tournent toutes les heures. Prévoir un champ frequence (DAILY, HOURLY, EVENT) pour n'appliquer le contrôle d'écart horaire que sur les jobs journaliers.
 
 - Ajout d'une colonne de marge SLA : croiser demarrage_observe + duree_med_min avec g.sla_heure permettra d'afficher directement un indicateur de risque de dépassement de SLA dès le premier coup d'œil.
+
+
+### Actions à faire après l'inventaire
+
+- Priorité 1 : traiter les anomalies des jobs P1 jusqu'à zéro (owner, SLA, planning, runbook). Chargez les corrections par CSV, comme décrit pour job_registry.
+
+- Compléter les tables produites manquantes avec les owners, puis les inscrire dans table_registry avec leurs seuils.
+
+- Ajouter à la main les dépendances non détectées pour les P1 (livraisons ERP, déclencheurs).
+
+- Corriger les plannings déclarés faux, ou ouvrir un problème si le job se déclenche de façon imprévue.
+
+- Ouvrir un problème pour chaque P1 sous 98 % de succès et chaque job sans run.
+
+- Rédiger les runbooks dans l'ordre : P1 avec le plus de jobs aval d'abord.
+
+- Figer l'inventaire : export en livrable daté, puis relance mensuelle de la requête pour suivre le nombre d'anomalies.
