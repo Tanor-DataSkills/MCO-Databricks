@@ -146,6 +146,7 @@ il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de
 
 ### E- Requête 05: Santé d’une table Delta (fraîcheur, petits fichiers)
 
+Ces deux commandes servent à auditer, diagnostiquer et superviser l'état d'une table transactionnelle sans lire les données métier elles-mêmes.
 
 **Contrôles data : fraîcheur OK sur 11 tables clés sur 12. silver.sales.orders : dernière ingestion J-1 18:05 (KO)**
 
