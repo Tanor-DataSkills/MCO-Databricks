@@ -1,13 +1,13 @@
 /*##############################################################################################################################################################################################################################
 #                                                               Jobs planifiés-non démarés.sql
 
-# Objectif: Cette requête SQL calcule un indicateur de synthèse des exécutions de jobs sur une fenêtre glissante incluant la fin de la veille et la journée en cours. En MCO (Maintien en Condition Opérationnelle),
-# elle sert à suivre la fiabilité des traitements batch/orchestrés et à détecter rapidement une dérive ou une série d'échecs.
+# Objectif: les jobs planifiés et non démarrés les tables système ne détiennent pas l'information. Il faut donc créer une table référentielle mco.referentiel_jobs (job_id, criticité, heure prévue, SLA, owner), 
+# alimenté une fois par l’API Jobs (GET /api/2.1/jobs/list, champ schedule) puis enrichi à la main. Le total « 42 planifiés » est le nombre de lignes de ce référentiel attendues la nuit..
 
 # Dépendances: 2 (mco.referentiel_jobs / system.lakeflow.job_run_timeline)
 # Ordre de création : 2 (Avoir les droits d'accèd pour system.lakeflow.job_run_timeline)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->Rapport 3 premier jours(manuel)  
-# Indicateurs: Total non démarrés
+# Indicateurs: Total Jobs planifiés non démarrés
 ##############################################################################################################################################################################################################################*/
 
  SELECT r.job_id, r.job_name, r.heure_prevue
@@ -18,3 +18,5 @@
  AND t.period_start_time >= date_trunc('day', current_timestamp())  
  WHERE t.job_id IS NULL   --Ne garde que les jobs pour lesquels aucune ligne n'a été trouvée dans job_run_timeline depuis le début de la journée
  AND r.heure_prevue < current_timestamp();
+
+
