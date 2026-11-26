@@ -5,9 +5,10 @@
 # alimenté une fois par l’API Jobs (GET /api/2.1/jobs/list, champ schedule) puis enrichi à la main. Le total « 42 planifiés » est le nombre de lignes de ce référentiel attendues la nuit..
 
 # Dépendances: 2 (mco.referentiel_jobs / system.lakeflow.job_run_timeline)
-# Ordre de création : 2 (Avoir les droits d'accèd pour system.lakeflow.job_run_timeline)
+# Ordre de création : 2 (Après Jobs echec-reussis.sql )
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->Rapport 3 premier jours(manuel)  
 # Indicateurs: Total Jobs planifiés non démarrés
+# Sources: Avoir les droits d'accès à system.lakeflow.job_run_timeline
 ##############################################################################################################################################################################################################################*/
 
  SELECT r.job_id, r.job_name, r.heure_prevue
