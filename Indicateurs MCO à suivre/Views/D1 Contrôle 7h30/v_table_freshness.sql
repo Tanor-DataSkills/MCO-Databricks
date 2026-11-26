@@ -15,9 +15,10 @@
 ##############################################################################################################################################################################################################################*/
 
 CREATE OR REPLACE VIEW mco.monitoring.v_table_freshness AS
+--Dernière moment de rafraichissement connue
 WITH derniere AS (
   SELECT table_name,
-         max_by(max_ingestion_ts, mesure_ts) AS max_ingestion_ts,
+         max_by(max_ingestion_ts, mesure_ts) AS max_ingestion_ts,   --valeur de max_ingestion_ts associée à la dernière mesure effectuée (max(mesure_ts))
          max(mesure_ts) AS mesure_ts
   FROM mco.ops.table_metrics GROUP BY table_name)
 SELECT t.table_name, t.criticite, t.seuil_fraicheur_h,
