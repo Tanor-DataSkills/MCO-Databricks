@@ -141,8 +141,6 @@ il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de
     
 - Pour affiner l'analyse d'un job spécifique et identifier si le goulet d'étranglement lié aux durées d'exécution des tâches ou à des erreurs de planification on utilise la requête 2 afin d'identifier le  ou les tasks ayant causé c retard
 
-  ### D- Requête 04: Analyse complémentaire (System Tables - Niveau Tasks / Erreurs)
-
 
 **Contrôles data**
 
@@ -199,4 +197,35 @@ il ne suffit pas de constater que le job a pris du temps mais l'intérêt est de
     
 ### 6- Redaction du rapport 
 
-Appliquer les règles du statut, remplir le modèle, ajouter une note et coller dans teams
+- Appliquer les règles du statut, remplir le modèle, ajouter une note
+  
+- Relire (P1 : second avis), publier avant 8h dans le canal teams avant 08h
+  
+- Actualiser dans le même fil si la situation a changé à 08 h 15(Message de suivi à faire sur le canal)
+  
+- Après publication, ouvrez ou complétez les incidents du registre (avec detecte_ts) et archivez le rapport
+
+
+### D- Requête 04: Tâche en cause dans un run  - Analyse complémentaire (System Tables - Niveau Tasks / Erreurs)
+
+Maintenant que le constat est fait et que le rapport matinal est mis à la disposition des équipes, on doit mettre en place une fiche d'incident pour chacune des erreurs.
+L'objectif  de cette requête est d'effectuer un diagnostic de niveau 2 (investigation d'incident) suite à la détection d'un run global en échec. Puisque la requête 1 a identifié que les run_id = 983472,48211, 48230  ont échoué, cette requête liste toutes les tâches qui composaient ce workflow pour identifier la tâche exacte qui a fait échouer l'ensemble du DAG. 
+Cette requête est très importante pour remplir la fiche d'incident avec des informations telles que: symptomes, Cause racine apparente, Impact aval
+
+
+>
+      SELECT task_key, result_state, termination_code, period_start_time, period_end_time
+      FROM system.lakeflow.job_task_run_timeline
+      WHERE run_id = 983472 ORDER BY period_start_time;
+>
+
+
+<img width="1313" height="143" alt="image" src="https://github.com/user-attachments/assets/02623756-e56c-4881-9c56-f726ec682807" />
+
+• **Symptôme :** Le job ingest_sales_daily a échoué à 03:12  en 15 minutes. Le job aval transform_bronze_to_silver a également été annulé par ricochet (CANCELED)
+
+• **Cause racine apparente :** La tâche read_landing a échoué avec le code de terminaison AZURE_STORAGE_CONNECTION_ERROR (problème d'accès ou indisponibilité temporaire d'ADLS / expiration de SAS token ou Managed Identity / problème réseau)
+
+• **Impact aval :** Vu que la source brute n'a pas pu être lue par read_landing, la tâche suivante transform_bronze_to_silver n'a pas pu s'exécuter, ce qui bloque net la mise à jour de la table cible silver.sales.orders, impactant le SLA de mise à disposition des données métiers pour les équipes
+
+Pour l'automatisation un job rapport_matinal_teams doit etre créer qui va composer et envoyer le message à partir des vues ; vous ajoutez seulement la note.
