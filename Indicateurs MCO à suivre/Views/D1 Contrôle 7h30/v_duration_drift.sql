@@ -37,4 +37,4 @@ derniere AS (
 SELECT b.job_id, b.job_name, b.criticite, b.mediane_s, b.p95_s,
        d.run_id, d.dernier_s, d.dernier_debut,
        round(d.dernier_s / b.mediane_s, 2) AS ratio
-FROM base b JOIN derniere d ON b.job_id = d.job_id;
+FROM base b JOIN derniere d ON b.job_id = d.job_id;  --associe la référence sur 30 jours à la dernière exécution réussie pour chaque job actif présent dans base
