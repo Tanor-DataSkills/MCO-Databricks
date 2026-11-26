@@ -1,3 +1,5 @@
+# Total_runs, reussis, echecs
+
 SELECT
   count(DISTINCT run_id) AS runs_total,
   count(DISTINCT CASE WHEN result_state = 'SUCCEEDED' THEN run_id END) AS reussis,
