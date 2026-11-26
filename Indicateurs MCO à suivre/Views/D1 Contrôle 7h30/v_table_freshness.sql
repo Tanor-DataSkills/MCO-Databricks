@@ -23,8 +23,8 @@ WITH derniere AS (
 SELECT t.table_name, t.criticite, t.seuil_fraicheur_h,
        d.max_ingestion_ts, d.mesure_ts,
        round((unix_timestamp(current_timestamp()) - unix_timestamp(d.max_ingestion_ts)) / 3600, 1) AS age_h,
-       CASE WHEN d.max_ingestion_ts IS NULL THEN 'INCONNU'
-            WHEN (unix_timestamp(current_timestamp()) - unix_timestamp(d.max_ingestion_ts)) / 3600 > t.seuil_fraicheur_h THEN 'ROUGE'
+       CASE WHEN d.max_ingestion_ts IS NULL THEN 'INCONNU'                                --si d.max_ingestion_ts est NULL (aucune donnée d'ingestion remontée)
+            WHEN (unix_timestamp(current_timestamp()) - unix_timestamp(d.max_ingestion_ts)) / 3600 > t.seuil_fraicheur_h THEN 'ROUGE'  --'ROUGE' si l'âge calculé est strictement supérieur à t.seuil_fraicheur_h
             ELSE 'VERT' END AS statut
 FROM mco.ref.table_registry t
 LEFT JOIN derniere d ON t.table_name = d.table_name;
