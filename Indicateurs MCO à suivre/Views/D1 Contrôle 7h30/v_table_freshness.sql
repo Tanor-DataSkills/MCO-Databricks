@@ -9,6 +9,7 @@
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->mco.monitoring.v_morning_status-->D1    
 # Indicateurs: 1
          # Tables critiques non fraîches(Âge depuis max_ingestion_ts > seuil du référentiel) ------> Carte Tables non fraîches(sur databricks créer un widget : count(*)) basé sur SELECT * FROM mco.monitoring.v_table_freshness WHERE statut = 'rouge' )
+         # Échecs de la nuit(Runs avec etat dans (FAILED, ERROR, TIMED_OUT))------------------> Tableau echecs de la nuit(Job/ Crit/ Run/ État/ Code/ Début/ Fin/ Durée (min))
 # Job: 
 # Table ou View appelée par : mco.monitoring.v_morning_status
 # Sources ou Sous requetes: derniere, mco.ops.table_metrics, mco.ref.table_registry
