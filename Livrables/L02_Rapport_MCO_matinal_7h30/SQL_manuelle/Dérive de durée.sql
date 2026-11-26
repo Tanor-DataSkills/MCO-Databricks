@@ -9,7 +9,7 @@
 # Dépendances: 1 (system.lakeflow.job_run_timeline)
 # Ordre de création : 4 (Après création Jobs echec-reussis.sql / Jobs planifiés-non démarés.sql /Jobs echecs de la nuit.sql)
 # Livrables concernés: L02_Rapport_MCO_matinal_7h30 -->Rapport 3 premier jours(manuel)  
-# Indicateurs: Listes des jobs échoués / Remplir le tableau étail des anomalies(Job, run ID, statut, heure)
+# Indicateurs: Dérives de durée : build_gold_orders 74 min contre une médiane de 41 min (x1,8)
 # Sources ou Sous requetes: Avoir les droits d'accès pour system.lakeflow.job_run_timeline
 ##############################################################################################################################################################################################################################*/
 
